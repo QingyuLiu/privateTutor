@@ -1,0 +1,24 @@
+from .models import create_model1,install
+from django.db import models
+from django.utils import timezone
+def CreateNewMessage(name):
+    fields = {
+        "from_id": models.ForeignField('UserProfile',on_delete=models.CASCADE),
+        "to_id": models.ForeignKey('UserProfile',on_delete=models.CASCADE),
+        "send_time": models.DateTimeField(default=timezone.now),
+        "content": models.TextField(),
+        '__str__': lambda self: '%d %d %s %s' % (
+            self.from_id,
+            self.to_id,
+            self.send_time,
+            self.content,
+        ), }
+    options = {'ordering': [
+        "from_id",
+        "to_id",
+        "send_time",
+        "content",
+    ], 'verbose_name': 'valued customer', }
+    custom_model = create_model1(name='message_'+name, fields=fields, options=options, app_label='account_app',
+                                 module='account_app.models')
+    install(custom_model)  # 同步到数据库中

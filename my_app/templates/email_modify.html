@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Email_modify</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static '/css/style.css' %}">
+        <link rel="shortcut icon" href="#" />
+    </head>
+    <body>
+        <main>
+            <!-- insert your code here -->
+             <div class="login2">
+            <div class="login">
+                <!-- 猫头鹰控件 -->
+				 <div id="owl-login" class="login-owl"></div><br>
+                		<div class="arms">
+							<div class="arm"></div>
+							<div class="arm-r"></div>
+						</div>
+            <div id="login1">
+                  <form action="/email_modify" method="POST" onsubmit="return validate();">
+                      {% csrf_token %}
+                    <span>Welcome!{{email}}</span><br><br><br>
+                    <span>Email Address</span><br>
+                    <input type="text" id="input1" onchange="change1()" name="newemail"/><div id="yy1"></div><br>
+                    <div id="id"><span></span>
+                        <input type="button" value="Back" id="button1" window.location.href=('/me')"/>
+                    <input type="submit" value="Confirm" id="button"/><br>
+                    </div>
+                       </form>
+                     <br>
+
+
+                    <div id="yy">  <span id="hint">{{ form.non_field_errors }}{{ mes }}</span></div>
+                    <span id="hint1">{{ mes1 }}</span>
+            </div></div>
+            </div>
+
+
+        </main>
+
+        <script type="text/javascript">
+
+            var i1=document.getElementById("input1");
+            var l=document.getElementById("yy");
+            var l1=document.getElementById("yy1");
+            var judge1=0;
+
+                 function validate(){
+                var str1=document.getElementById("input1").value;
+                   if(str1==""){
+                      i1.style.border = 'solid grey';
+                       l.innerHTML='<span id="hint">Please complete all!</span>';
+                    l1.innerHTML='';
+                    return false;
+                   }
+           else{
+           if(judge1==1){
+           return true;
+           }
+           else{
+           return false;
+           }
+           }
+               }
+               function change1(){
+                var str1=document.getElementById("input1").value;
+                if(str1==""){
+                    i1.style.border = 'solid grey';
+                    l1.innerHTML='<span id="hint">Cannot be empty!</span>';
+                       judge1=0;
+                }
+                else{
+                    if(!/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(str1)){
+                   i1.style.border = 'solid red';
+                   l1.innerHTML='<span id="hint">enter a valid email address.</span>';
+                      judge1=0;
+                }
+                else{
+                    i1.style.border = 'solid green';
+                    judge1=1;
+                    l1.innerHTML='';
+                }
+                }
+                }
+        </script>
+    </body>
+</html>
