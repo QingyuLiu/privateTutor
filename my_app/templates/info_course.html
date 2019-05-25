@@ -23,8 +23,27 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+	<script type="text/javascript">
+	function purchase(){
+	var choice = confirm('确定要购买该课程吗？');
+	}
+	/*
+	$(document).ready(function(){
+		console.log('yeah');
+		$("#purchase").click(function(){
+		debugger;
+			//var choice = confirm('确定要购买该课程吗？');
+		});
+	});
+	document.getElementById("purchase").onclick = function() {
+	debugger;
+           //var choice = confirm('确定要购买该课程吗？');
+        };
+    */
+	</script>
 </head>
 <body>
+
 <div class="wrapper">
 	<div class="preloader"></div>
 
@@ -446,7 +465,7 @@
 				</div>
 				<div class="col-lg-3 col-xl-3">
 					<div class="candidate_personal_overview style2">
-				        <button class="btn btn-block btn-thm mb15"><span class="flaticon-alarm pr10"></span> 购买课程</button>
+				        <button class="btn btn-block btn-thm mb15" id="purchase" onclick="purchase();"><span class="flaticon-alarm pr10"></span> 购买课程</button>
 					</div>
 				</div>
 			</div>
