@@ -29,5 +29,6 @@ urlpatterns = [
        url(r'^login_validate$', views.login_validate),
        url(r'^me$', views.me),
        url(r'^logout$', views.logout),
+       url(r'^info_course/$',views.info_course)
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

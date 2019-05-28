@@ -125,3 +125,15 @@ def login_validate(request):
 #         return render(request, 'password_modify.html',{'email':request.session.get('username')})
 #     else:
 #         return render(request, 'login.html')
+
+
+@csrf_exempt
+def info_course(request):
+    if request.method == 'GET': #使用？id=xxx传参
+        id = request.GET.get('id')
+        if request.session.get('is_login', None):
+            return render(request, 'info_course.html', {'Teacher': 'lala','enable': True})
+        else:
+            return render(request, 'info_course.html', {'Teacher': 'lala','enable': False})
+    if request.method == 'POST':
+        pass

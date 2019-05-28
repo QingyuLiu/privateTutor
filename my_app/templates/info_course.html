@@ -454,8 +454,8 @@
 							<img class="img-fluid" src="../static/images/partners/cl1.jpg" alt="cl1.jpg">
 						</div>
 						<div class="details">
-							<h3>高考英语冲刺班</h3>
-							<p class="text-thm2">Qiwo2019</p>
+							<h3>{{course.courseName}}</h3>
+							<p class="text-thm2">{{course.date_create}}</p>
 							<ul class="address_list">
 								<li class="list-inline-item"><a href="#"><span class="flaticon-phone-call text-thm"></span> +86 132 0771 6967</a></li>
 								<li class="list-inline-item"><a href="#"><span class="flaticon-mail text-thm"></span> <span class="__cf_email__" data-cfemail="c5a1a0a8aa85b1ada0a8a0a3aab7a0b6b1eba6aaa8">16301087@bjtu.edu.cn</span></a></li>
@@ -463,11 +463,13 @@
 						</div>
 					</div>
 				</div>
+				{% if enable %}
 				<div class="col-lg-3 col-xl-3">
 					<div class="candidate_personal_overview style2">
 				        <button class="btn btn-block btn-thm mb15" id="purchase" onclick="purchase();"><span class="flaticon-alarm pr10"></span> 购买课程</button>
 					</div>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</section>
@@ -486,29 +488,29 @@
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-label"></span></div>
 									<div class="details">
-										<p>科目</p>
-										<p>高中英语</p>
+										<p>标签</p>
+										<p>{{course.tag}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-timeline"></span></div>
 									<div class="details">
 										<p>时间</p>
-										<p>2019.5-2019.6</p>
+										<p>{{course.time}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-paper-plane"></span></div>
 									<div class="details">
 										<p>讲师</p>
-										<p>李华</p>
+										<p>{{course.teacherID}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-2-squares"></span></div>
 									<div class="details">
 										<p>价格</p>
-										<p>￥1,000</p>
+										<p>{{course.price}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
@@ -528,10 +530,8 @@
 							</div>
 							<div class="candidate_about_info style2">
 								<h4 class="fz20 mb30">课程详情</h4>
-								<p class="mb30">还在为你蹩脚的英语作文而烦恼吗？还在担心听说读写通通个位数的成绩吗？资深教师李华来帮助你攻克高考英语！</p>
-								<p class="mb30">Mrs.李华，初高中学生公选最受欢迎的英语老师之一，任教二十余年收到上亿封学生来信，该数据已申请吉尼斯“世界上收到信件最多的人”的纪录。</p>
-								<p class="mb30">高考冲刺班仅需1k，五顿海底捞换高考五十分！承诺高考英语不上五十全额退款！</p>
-							</div>
+								<p class="mb30">{{course.courseContent}}</p>
+								</div>
 						</div>
 
 						<div class="col-lg-12">
