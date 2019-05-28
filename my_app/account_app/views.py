@@ -3,6 +3,7 @@ from .models import UserProfile
 from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
+from account_app import models
 
 import json
 @csrf_exempt
@@ -131,9 +132,11 @@ def login_validate(request):
 def info_course(request):
     if request.method == 'GET': #使用？id=xxx传参
         id = request.GET.get('id')
+        course = models.course.objects.filter(ID=id)
+        teacher = models.UserProfile.objects.filter(userID=course.teacherID)
         if request.session.get('is_login', None):
-            return render(request, 'info_course.html', {'Teacher': 'lala','enable': True})
+            return render(request, 'info_course.html', {'course': course,'teacher': teacher,'enable': True})
         else:
-            return render(request, 'info_course.html', {'Teacher': 'lala','enable': False})
+            return render(request, 'info_course.html', {'course': course,'teacher': teacher,'enable': False})
     if request.method == 'POST':
         pass

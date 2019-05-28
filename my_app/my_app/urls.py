@@ -19,10 +19,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
+from django.contrib import admin
 
 urlpatterns = [
-       #path('admin/', admin.site.urls),
+       url('admin/', admin.site.urls),
        url(r'^$', views.protect1),
        url(r'^register$', views.register),
        url(r'^login$', views.login),
