@@ -29,6 +29,7 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)  # 保存密码
         return user
 
+
     def create_superuser(self, email, username, password,userID):
         """
         Creates and saves a superuser with the given email, name and password.
