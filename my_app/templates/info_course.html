@@ -24,7 +24,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script type="text/javascript">
-	function purchase(){
+	function purchase_cancel(){
 	var choice = confirm('确定要购买该课程吗？');
 	}
 	/*
@@ -35,14 +35,56 @@
 			//var choice = confirm('确定要购买该课程吗？');
 		});
 	});
-	document.getElementById("purchase").onclick = function() {
+	document.getElementById("purchase_cancel").onclick = function() {
 	debugger;
            //var choice = confirm('确定要购买该课程吗？');
         };
     */
+
 	</script>
 </head>
 <body>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 style="color:#78B334">订单详情</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <!--<h4 class="modal-title" id="myModalLabel">Modify</h4>-->
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="ActivityChange" method="post">
+                        <div >
+                            <!--
+                            <label class="col-sm-3 control-label">Activity Name:</label><label style="display:none"></label>
+                            <div class="col-xs-3 col-sm-6">
+                                <input type="text" class="form-control" name="aname">
+                            </div>
+                            -->
+                            <label class="col-sm-3 control-label">课程编号</label><label style="display:none"></label>
+                            <p class="col-sm-3 control-label" style="color:#78B334">{{course.ID}}</p><label style="display:none"></label>
+                            <label class="col-sm-3 control-label">课程名称：</label><label style="display:none"></label>
+                            <p class="col-sm-3 control-label" style="color:#78B334">{{course.courseName}}</p><label style="display:none"></label>
+                            <label class="col-sm-3 control-label">课程价格：</label><label style="display:none"></label>
+                            <p class="col-sm-3 control-label" style="color:#78B334">{{course.price}}</p><label style="display:none"></label>
+                            <label class="col-sm-3 control-label">课程时间：</label><label style="display:none"></label>
+                            <p class="col-sm-3 control-label" style="color:#78B334">{{course.time}}</p><label style="display:none"></label>
+                            <label class="col-sm-3 control-label">课程讲师：</label><label style="display:none"></label>
+                            <p class="col-sm-3 control-label" style="color:#78B334">{{course.teacherID}}</p><label style="display:none"></label>
+                            <label class="col-sm-3 control-label">微信支付：</label><label style="display:none"></label>
+                            <img class="nav_logo_img img-fluid" src="../static/images/qrcode.jpg" alt="header-logo.png">
+                        <!-- <label for="用户名" class="col-sm-2 control-label" style="color:#FF0000;text-align:left;">已存在</label> -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-info" onclick="return Modify()" style="color:white;float: top;">支付成功</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="purchase_cancel();" style="float: top;">稍后支付</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+    </div><!-- /.modal -->
 
 <div class="wrapper">
 	<div class="preloader"></div>
@@ -466,7 +508,8 @@
 				{% if enable %}
 				<div class="col-lg-3 col-xl-3">
 					<div class="candidate_personal_overview style2">
-				        <button class="btn btn-block btn-thm mb15" id="purchase" onclick="purchase();"><span class="flaticon-alarm pr10"></span> 购买课程</button>
+                        <!--onclick="purchase();"-->
+				        <button class="btn btn-block btn-thm mb15" id="purchase" data-toggle="modal" data-target="#myModal" ><span class="flaticon-alarm pr10"></span> 购买课程</button>
 					</div>
 				</div>
 				{% endif %}
