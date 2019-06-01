@@ -39,7 +39,7 @@ def login(request):
                     person = user.objects.get(email=email)
                     if person.password == password:
                         if request.session.get('is_login', None):
-                            return render(request, 'index.html', {'mes1': "You have already been login."})
+                            return render(request, 'page-blog-list.html', {'mes1': "You have already been login."})
                         request.session['user_email'] = email
                         request.session['user_password'] =password
                         request.session['is_login'] = True
@@ -47,15 +47,15 @@ def login(request):
                         obj=person.date_joined
                         request.session['created_at'] =obj.strftime('%Y-%m-%d %H:%M:%S')
 
-                        return redirect('/me')
+                        return redirect('/page-blog-list')
                     else:
-                        return render(request, 'index.html', {'mes1': "password is invalid."})
+                        return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})
                 else:
-                    return render(request, 'index.html', {'mes1': "email not found."})
+                    return render(request, 'page-blog-list.html', {'mes1': "email not found."})
         else:
-               return render(request, 'index.html',{'error':form.errors,'form1': form})
+               return render(request, 'page-blog-list.html',{'error':form.errors,'form1': form})
 
-    return render(request, 'index.html')
+    return render(request, 'page-blog-list.html')
 
 @csrf_exempt
 def register(request):
@@ -77,7 +77,11 @@ def register(request):
 
 @csrf_exempt
 def login_validate(request):
-   return render(request, 'index.html')
+    return render(request, 'index.html')
+
+@csrf_exempt
+def homepage(request):
+    return render(request,'page-blog-list.html')
 #
 # @csrf_exempt
 # def password_modify(request):
