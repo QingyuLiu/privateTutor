@@ -63,20 +63,17 @@ class LogForm(forms.Form):
         password = self.cleaned_data.get('password')
 
 class ModifyPassword(forms.Form):
-    password3 = forms.CharField(label='oldPassword', widget=forms.PasswordInput)
-    password4 = forms.CharField(label='newPassword1', widget=forms.PasswordInput)
-    password5 = forms.CharField(label='newPassword2', widget=forms.PasswordInput)
-
+    change_origin_password = forms.CharField(label='change_origin_password"', widget=forms.PasswordInput)
+    change_new_password = forms.CharField(label='change_new_password', widget=forms.PasswordInput)
+    change_re_new_password = forms.CharField(label='change_re_new_password', widget=forms.PasswordInput)
     def clean(self):
-        password4 = self.cleaned_data.get('newpassword1')
-
-
-        if len(password4) < 6:
-            raise forms.ValidationError("Password too short.")
-
-        password5 = self.cleaned_data.get('newpassword2')
-        if (password4 and password5 and password4!= password5):
-            raise forms.ValidationError("Password mismatch.")
+        try:
+            change_origin_password = self.cleaned_data.get('change_origin_password')
+            change_new_password = self.cleaned_data.get('change_new_password')
+            print(change_origin_password)
+            print(change_new_password)
+        except Exception as e:
+            raise forms.ValidationError("check wrong.")
 
 class ModifyEmail(forms.Form):
 

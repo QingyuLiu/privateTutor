@@ -30,7 +30,6 @@
 document.getElementById("check").checked=false;
  function change1(){
                 var str1=document.getElementById("login-email").value;
-
                     var isChecked = document.getElementById("check").checked;
                     if(checkCookieExist(str1)){
                     document.getElementById("login-password").value=getCookie(str1);

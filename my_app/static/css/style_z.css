@@ -9378,4 +9378,9 @@ label{
 }
 button.btn.my-2.my-sm-0{
   box-shadow: none;
-}    
+}
+
+
+.alert alert-error{
+  color: #b50118
+}

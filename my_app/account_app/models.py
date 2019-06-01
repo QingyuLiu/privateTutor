@@ -9,7 +9,6 @@ from django.contrib.auth.models import (
 
 from django.utils import timezone
 
-
 class UserProfileManager(BaseUserManager):
     def create_user(self, email, password,username,identity):
         """
@@ -29,6 +28,7 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)  # 保存密码
         return user
 
+
     def create_superuser(self, email, username, password,userID):
         """
         Creates and saves a superuser with the given email, name and password.
@@ -42,6 +42,7 @@ class UserProfileManager(BaseUserManager):
         return user
 
 #user-id、名字、邮箱、身份、性别、年龄、创立时间
+# user-id、名字、邮箱、身份、性别、年龄、创立时间、手机号、支付宝账号、个人介绍
 class UserProfile(AbstractBaseUser):
     email = models.EmailField(
         verbose_name='email address',
@@ -64,6 +65,9 @@ class UserProfile(AbstractBaseUser):
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    cellphone = models.CharField(max_length=12,default="")
+    pay_id = models.CharField(max_length=30,default="")
+    introduction = models.CharField(max_length=100,default="")
 
     objects = UserProfileManager()  # 创建用户
 
@@ -164,7 +168,6 @@ class course_order(models.Model):
     class Meta:
         db_table = 'course_order'
 
-
 # 以下是动态建表
 # name是表名，fields是字段，app_label是你的应用名(如：flow)，module是应用下的模型（如:flow.models）,options是元类选项
 def create_model1(name, fields=None, app_label='', module='', options=None):
@@ -181,7 +184,6 @@ def create_model1(name, fields=None, app_label='', module='', options=None):
     if fields:
         attrs.update(fields)  # 创建模型类对象
     return type(name, (models.Model,), attrs)
-
 
 def install(custom_model):
     from django.db import connection

@@ -19,16 +19,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
+from django.contrib import admin
 
 urlpatterns = [
-       #path('admin/', admin.site.urls),
+       url('admin/', admin.site.urls),
        url(r'^$', views.protect1),
        url(r'^register$', views.register),
        url(r'^login$', views.login),
        url(r'^login_validate$', views.login_validate),
        url(r'^me$', views.me),
        url(r'^logout$', views.logout),
-       url(r'^page-blog-list$', views.homepage),
+       url(r'^info_course/$',views.info_course),
+       url(r'^profile_change_password$',views.profile_change_password),
+       url(r'^profile_person_info$',views.profile_person_info)
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
