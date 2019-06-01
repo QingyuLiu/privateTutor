@@ -6,6 +6,50 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import course
 
 import json
+
+'''
+------------------------
+-----BY AUTHOR ZHU------
+------------------------
+'''
+@csrf_exempt
+def profile_change_password(request):
+    if request.session.get('is_login', None):
+        request_dict = {}
+        if request.method == 'POST':
+            form = ModifyPassword(request.POST)
+            if form.is_valid():
+                change_origin_password = form.cleaned_data['change_origin_password']
+                change_new_password = form.cleaned_data['change_new_password']
+                user = get_user_model()
+                user = user.objects.get(email=request.session['user_email'])
+                print(user)
+                if user.password == change_origin_password:
+                    user.password = change_new_password
+                    user.save()
+                    request_dict['modify_success'] = True
+                    return render(request, 'page-employer-change-password.html', request_dict)
+                else:
+                    request_dict['oldpassword_is_wrong'] = True
+                    return render(request, 'page-employer-change-password.html', request_dict)
+            else:
+                print("not valid")
+                return render(request, 'page-employer-change-password.html')
+        else:
+            return render(request, 'page-employer-change-password.html')
+    else:
+        return render(request, 'index.html')
+
+@csrf_exempt
+def profile_person_info(request):
+    if request.session.get('is_login', None):
+        return render(request, 'index.html')
+    else:
+        if request.method == 'POST':
+            return render(request, 'page-employer-profile.html')
+        else:
+            return render(request, 'page-employer-profile.html')
+
 @csrf_exempt
 def protect1(request):
     if request.session.get('is_login', None):
@@ -38,6 +82,8 @@ def login(request):
                 user=get_user_model()
                 if user.objects.filter(email=email):
                     person = user.objects.get(email=email)
+                    print(person.password)
+                    print(password)
                     if person.password == password:
                         if request.session.get('is_login', None):
                             return render(request, 'index.html', {'mes1': "You have already been login."})
