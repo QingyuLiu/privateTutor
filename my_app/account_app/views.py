@@ -129,6 +129,7 @@ def login_validate(request):
 @csrf_exempt
 def homepage(request):
     return render(request,'page-blog-list.html')
+
 #
 # @csrf_exempt
 # def password_modify(request):
