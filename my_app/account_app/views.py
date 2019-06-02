@@ -94,7 +94,7 @@ def login(request):
                         obj=person.date_joined
                         request.session['created_at'] =obj.strftime('%Y-%m-%d %H:%M:%S')
 
-                        return redirect('/page-blog-list')
+                        return render(request,'/page-blog-list.html')
                     else:
                         return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})
                 else:
