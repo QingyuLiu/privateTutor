@@ -56,17 +56,17 @@ class UserProfile(AbstractBaseUser):
     )
     identity=models.CharField(max_length=2,choices = IDENTITY_CHOICE,null=False)
     GENDER_CHOICE = (
-        (u'M', u'Male'),
-        (u'F', u'Female'),
+        (u'男', u'Male'),
+        (u'女', u'Female'),
     )
-    gender = models.CharField(max_length=2, choices=GENDER_CHOICE,default='M')
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICE,default='男')
     age = models.IntegerField(default=20)
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     cellphone = models.CharField(max_length=12,default="")
     pay_id = models.CharField(max_length=30,default="")
-    zone = models.CharField(max_length=20,default="")
+    zone = models.CharField(max_length=20,default="Beijing,China")
     introduction = models.CharField(max_length=100,default="")
 
     objects = UserProfileManager()  # 创建用户

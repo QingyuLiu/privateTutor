@@ -4,6 +4,7 @@ from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from .models import course
+from django.http import JsonResponse
 
 import json
 
@@ -43,9 +44,32 @@ def profile_change_password(request):
 @csrf_exempt
 def profile_person_info(request):
     if request.session.get('is_login', None):
-        if request.method == 'POST':
-            print('ajax')
-            return render(request, 'page-employer-profile.html')
+        if request.is_ajax():
+            username = request.POST.get("username")
+            email = request.POST.get("email")
+            cellphone = request.POST.get("cellphone")
+            age = request.POST.get("age")
+            pay_id = request.POST.get("pay_id")
+            gender = request.POST.get("gender")
+            introduction = request.POST.get("introduction")
+            print(username+email+cellphone+age+pay_id+gender+introduction)
+            user = get_user_model()
+            user = user.objects.get(email=request.session['user_email'])
+            user.username = username
+            user.gender = gender
+            user.age = age
+            user.cellphone = cellphone
+            user.pay_id = pay_id
+            user.gender = gender
+            user.introduction = introduction
+            user.save()
+            request.session['username'] = username
+            request.session['gender'] = gender
+            request.session['age'] = age
+            request.session['cell_phone'] = cellphone
+            request.session['pay_id'] = pay_id
+            request.session['introduction'] = introduction
+            return JsonResponse({'status': 200, 'message': 'add event success'})
         else:
             return render(request, 'page-employer-profile.html')
     else:
