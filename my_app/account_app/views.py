@@ -52,6 +52,10 @@ def profile_person_info(request):
         return render(request, 'index.html')
 
 @csrf_exempt
+def homepage(request):
+    return render(request,'page-blog-list.html')
+
+@csrf_exempt
 def protect1(request):
     if request.session.get('is_login', None):
         return render(request, 'me.html')
@@ -87,7 +91,7 @@ def login(request):
                     print(password)
                     if person.password == password:
                         if request.session.get('is_login', None):
-                            return render(request, 'index.html', {'mes1': "You have already been login."})
+                            return render(request, 'page-blog-list.html', {'mes1': "You have already been login."})
                         request.session['user_email'] = email
                         request.session['user_password'] =password
                         request.session['is_login'] = True
@@ -102,15 +106,16 @@ def login(request):
                         request.session['pay_id'] = person.pay_id
                         request.session['zone'] = person.zone
                         request.session['introduction'] = person.introduction
-                        return redirect('/me')
-                    else:
-                        return render(request, 'index.html', {'mes1': "password is invalid."})
-                else:
-                    return render(request, 'index.html', {'mes1': "email not found."})
-        else:
-               return render(request, 'index.html',{'error':form.errors,'form1': form})
 
-    return render(request, 'index.html')
+                        return redirect('/page-blog-list')
+                    else:
+                        return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})
+                else:
+                    return render(request, 'page-blog-list.html', {'mes1': "email not found."})
+        else:
+               return render(request, 'page-blog-list.html',{'error':form.errors,'form1': form})
+
+    return render(request, 'page-blog-list.html')
 
 @csrf_exempt
 def register(request):
