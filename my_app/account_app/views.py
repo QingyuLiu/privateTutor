@@ -43,12 +43,14 @@ def profile_change_password(request):
 @csrf_exempt
 def profile_person_info(request):
     if request.session.get('is_login', None):
-        return render(request, 'index.html')
-    else:
         if request.method == 'POST':
+            print('ajax')
             return render(request, 'page-employer-profile.html')
         else:
             return render(request, 'page-employer-profile.html')
+    else:
+        return render(request, 'index.html')
+
 
 @csrf_exempt
 def protect1(request):
@@ -94,6 +96,15 @@ def login(request):
                         obj=person.date_joined
                         request.session['created_at'] =obj.strftime('%Y-%m-%d %H:%M:%S')
 
+                        request.session['identity'] = person.identity
+                        request.session['gender'] = person.gender
+                        request.session['age'] = person.age
+                        request.session['cell_phone'] = person.cellphone
+                        request.session['pay_id'] = person.pay_id
+                        request.session['zone'] = person.zone
+                        request.session['introduction'] = person.introduction
+
+                        return redirect('/page-blog-list')
                         return render(request,'/page-blog-list.html')
                     else:
                         return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})

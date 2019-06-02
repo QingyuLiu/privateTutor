@@ -41,8 +41,7 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-#user-id、名字、邮箱、身份、性别、年龄、创立时间
-# user-id、名字、邮箱、身份、性别、年龄、创立时间、手机号、支付宝账号、个人介绍
+# user-id、名字、邮箱、身份、性别、年龄、创立时间、(手机号、支付宝账号、个人介绍)、地区
 class UserProfile(AbstractBaseUser):
     email = models.EmailField(
         verbose_name='email address',
@@ -61,12 +60,13 @@ class UserProfile(AbstractBaseUser):
         (u'F', u'Female'),
     )
     gender = models.CharField(max_length=2, choices=GENDER_CHOICE,default='M')
-    age=models.IntegerField(default=0)
+    age = models.IntegerField(default=20)
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     cellphone = models.CharField(max_length=12,default="")
     pay_id = models.CharField(max_length=30,default="")
+    zone = models.CharField(max_length=20,default="")
     introduction = models.CharField(max_length=100,default="")
 
     objects = UserProfileManager()  # 创建用户
