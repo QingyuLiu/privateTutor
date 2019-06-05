@@ -221,7 +221,9 @@ def info_course(request):
         id = request.GET.get('id')
         c = course.objects.get(ID=id)
         teacher = UserProfile.objects.get(userID=c.teacherID_id)
-        if request.session.get('is_login', None) & request.session['identity']=='S':
+        #并没有写进身份
+        #print(request.session['identity'])
+        if request.session.get('is_login', None) :
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True})
         else:
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False})
@@ -232,5 +234,11 @@ def info_course(request):
             user = UserProfile.objects.get(email = request.session['user_email'])
             course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
         else:
-            print("留言")
+            courseID_id = request.GET.get('id')
+            review = request.POST.get('review')
+            to = request.POST.get('to')              #to使用的是楼层编号，楼主代表0
+            username=request.session['username']    #from使用的是发送人名字
+            #插入数据库
+            #course_order.objects.create(date_created=datetime.now(),from=username,to=to,review=review)
+
 

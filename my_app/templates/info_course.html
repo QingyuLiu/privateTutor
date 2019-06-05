@@ -23,7 +23,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<script type="text/javascript">
+	<script type="text/javascript" defer=true>
 	function purchase_cancel(){
         var httpRequest = new XMLHttpRequest();
         httpRequest.open('POST','', true);
@@ -37,6 +37,31 @@
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         httpRequest.send('operation=purchase;state=N');
         alert("购买成功！");
+	}
+	function redirect(){
+	    var node = event.srcElement;
+	    var par = node.parentNode;
+	    var sibling = par.childNodes;
+	    var p = sibling[0].childNodes
+        alert(par);
+	}
+	function reply(){
+        var review = document.getElementById("review").value;
+        if (review==""){
+            alert("写点什么吧！");
+        }
+        else{
+            var to = document.getElementById("to_id").innerText;
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open('POST','', true);
+            httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            var args='operation=reply&review='+review+'&to='+to;
+            console.log(args)
+            httpRequest.send(args);
+            alert("回复成功！");
+            document.getElementById("to_id").innerHTML = "0";
+            document.getElementById("to_name").innerHTML = "楼主";
+        }
 	}
 	/*
 	$(document).ready(function(){
@@ -630,34 +655,35 @@
 								<h4 class="title mb30">留言</h4>
 								<div class="details">
 									<img class="img-fluid rounded-circle float-left" src="../static/images/team/1.jpg" alt="1.jpg">
-									<h4>小怪兽2019
-										<a href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
-									</h4>
+									<div>
+                                        <label style="color:#78B334">#</label>
+                                        <label id="floor" style="color:#78B334">1</label>
+                                        <label id="name">小怪兽2019</label>
+										<a onclick="redirect()" href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
+									</div>
 									<ul class="meta">
 										<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span> 2019/5/23</a></li>
 									</ul>
 									<p>去年上过Mrs.李华的英语冲刺，高考英语从50分到150！感谢老师！</p>
-								</div>
-								<div class="details pt0">
-									<img class="img-fluid rounded-circle float-left" src="../static/images/team/2.jpg" alt="2.jpg">
-									<h4>大怪兽2019
-										<a href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
-									</h4>
-									<ul class="meta">
-										<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span> 2019/5/12</a></li>
-									</ul>
-									<p>高考没上50真的全额退款吗？</p>
+                                    <div class="details" style="margin-left:100px;">
+                                        <!--复制上一个div内容-->
+								    </div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-12">
 							<h4 class="title">发送留言</h4>
-							<div class="candidate_leave_review text-center">
-								<div class="detials">
+							<div class="candidate_leave_review">
+								<div>
 									<form id="review-form" class="ulockd-mrgn630" action="#" method="post">
+                                        <label class="mb30">回复：</label>
+                                        <label style="color:#78B334">#</label>
+                                        <label id="to_id" style="color:#78B334">0</label>
+                                        <label id="to_name" style="color:#78B334">楼主</label>
 										<div class="form-group text-left">
 										    <textarea class="form-control" rows="5" name="review" id="review"></textarea>
-											<a href="#" class="btn btn-lg btn-thm">提交<span class="flaticon-right-arrow"></span></a>
+                                            <p></p>
+											<button type="button" class="btn btn-lg btn-thm" onclick="reply()">提交<span class="flaticon-right-arrow"></span></button>
 										</div>
 									</form>
 								</div>
