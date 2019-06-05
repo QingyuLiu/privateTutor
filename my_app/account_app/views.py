@@ -132,11 +132,11 @@ def login(request):
                         return redirect('/page-blog-list')
                         return render(request,'/page-blog-list.html')
                     else:
-                        return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})
+                        return render(request, 'index.html', {'mes1': "password is invalid."})
                 else:
-                    return render(request, 'page-blog-list.html', {'mes1': "email not found."})
+                    return render(request, 'index.html', {'mes1': "email not found."})
         else:
-               return render(request, 'page-blog-list.html',{'error':form.errors,'form1': form})
+               return render(request, 'index.html',{'error':form.errors,'form1': form})
 
     return render(request, 'page-blog-list.html')
 
@@ -221,7 +221,7 @@ def info_course(request):
         id = request.GET.get('id')
         c = course.objects.get(ID=id)
         teacher = UserProfile.objects.get(userID=c.teacherID_id)
-        if request.session.get('is_login', None):
+        if request.session.get('is_login', None) & request.session['identity']=='S':
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True})
         else:
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False})
