@@ -116,6 +116,7 @@ class course(models.Model):
     courseContent=models.TextField()
     state=models.IntegerField(null=False)#2代表删除 0代表未开课 1代表已结束
     tag=models.TextField()
+    price=models.FloatField()
     picture1=models.ImageField(null=True)
     picture1 = models.ImageField(null=True)
     picture2 = models.ImageField(null=True)
@@ -163,8 +164,9 @@ class course_order(models.Model):
         (u'UP', u'Unpaid'),
         (u'N', u'Not finish'),
         (u'R', u'Refund'),
-        (u'CL', u'Close'),
-    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP,CL为交易已关闭（未支付状态下选择取消课程变为交易已关闭）
+        (u'D', u'Delete'),
+        (u'CL', u'Closed'),
+    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP，D为已经删除，CL为交易已关闭
     state=models.CharField(max_length=4,choices=STATE_CHOICE)
     class Meta:
         db_table = 'course_order'

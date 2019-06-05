@@ -114,9 +114,9 @@ def login(request):
                         if request.session.get('is_login', None):
                             return render(request, 'page-blog-list.html', {'mes1': "You have already been login."})
                         request.session['user_email'] = email
-                        request.session['user_password'] =password
                         request.session['is_login'] = True
                         request.session['username'] =person.username
+                        request.session['userID'] = person.userID
                         obj=person.date_joined
                         request.session['created_at'] =obj.strftime('%Y-%m-%d %H:%M:%S')
 
