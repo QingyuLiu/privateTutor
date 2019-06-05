@@ -4,6 +4,7 @@ import json
 from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
+import datetime
 
 @csrf_exempt#显示已购买课程的信息 以及退课或删除已完成课程订单
 def BoughtCourseInfo(request):
@@ -30,8 +31,10 @@ def BoughtCourseInfo(request):
             else:
                 txt='error'
 
+            time1=course.startTime.strftime('%Y/%m/%d')+'-'+course.endTime.strftime(
+            '%Y/%m/%d')+"               "+course.courseStartTime.strftime('%H:%M') + '-' + course.courseEndTime.strftime( '%H:%M')
             courseInfo = {'id':order.ID,'courseName':course.courseName,
-                          'teacher':teacher.username, 'tag':course.tag, 'time':course.time,
+                          'teacher':teacher.username, 'tag':course.tag, 'time':time1,
                           'price':course.price, 'state':txt}
             courseInfoList.append(courseInfo)
 
@@ -41,20 +44,27 @@ def BoughtCourseInfo(request):
         })
 
     if request.method=="POST":
-        id = request.GET.get('id')
-        print(id)
+        type=request.POST.get('type')
+        id = request.POST.get('id')
         order = models.course_order.objects.get(ID=id)
-        if order.state == "C" and order.state == "CL":
-            order.update(state="D")
+        print(type)
+        if type=="D":
+            order.state = "D"
+            order.save()
             message = "成功删除订单！"
-        elif order.state == "UP":
+        elif type=="C":
             order.state = "CL"
-            order.save
+            order.save()
             message = "成功取消订单！"
+        elif type=="R":
+            order.state = "R"
+            order.save()
+            message = "申请退款成功，待课任老师审核通过后将金额返还至您的账户！"
+        else:
+            message='error'
 
-        request.session['message'] = message
-        return render(request, 'page-employer-resume.html', {
-            'message': message,
-        })
+        return HttpResponse(json.dumps({
+            "message": message
+        }))
 
 

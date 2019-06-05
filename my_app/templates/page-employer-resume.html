@@ -38,8 +38,9 @@
                 url: "/order",
                 type: "POST",
                 data: post_data,
+                dataType:"json",
                 success: function (data) {
-                    data = JSON.parse(data);
+                	window.location.reload();
                     alert(data["message"]);
                 }
             });
@@ -450,28 +451,24 @@
 								</div>
 								<div class="content">
 									<h4 class="title">{{ item.courseName }} <small class="verified text-thm2 pl10"><i class="fa fa-check-circle"></i></small></h4>
-									<span class="flaticon-user"></span><span class="text-thm2">{{ item.teacher }}</span></p>
-									<span class="text-thm2">{{ item.tag }}</span></p>
-									<ul class="address_list">
-										<span class="flaticon-clock"></span>
-										<li class="list-inline-item"><a href="#">{{ item.time }}</a></li>
-										<span class="flaticon-price pl20"></span>
-										<li class="list-inline-item"><a href="#">{{ item.price }}</a></li>
-									</ul>
+									<span class="flaticon-user"></span><li class="list-inline-item"> {{ item.teacher }}</li><br>
+									<span class="flaticon-clock"></span><li class="list-inline-item"> {{ item.time }}</li><br>
+									<span class="flaticon-price "></span><li class="list-inline-item"> {{ item.price }}</li><br>
+									<span class="text-thm2"> {{ item.tag }}</span></p>
 								</div>
 				    			<ul class="view_edit_delete_list mt25 float-right fn-xl">
 									<div class="job_post_count text-center">
 										<h4 class="text-thm2">{{ item.state }}</h4>
 									</div>
 									<br>
-				    				<li class="list-inline-item" style="background-color: #d1eaff;"><a href="#" onclick='postData("D","{{ item.id }}")' data-toggle="tooltip"  data-placement="top" title="进入课程">进入课程</a></li>
+				    				<li class="list-inline-item" style="background-color: #d1eaff;"><a href="#"  data-toggle="tooltip"  data-placement="top" title="进入课程">进入课程</a></li>
 									{% if item.state == "未支付" %}
-				    				<li class="list-inline-item" style="background-color: #c1ebc9;"><a href="/cancel_order?id={{ item.id }}" data-toggle="tooltip"  data-placement="top" title="取消订单">取消订单</a></li>
+				    				<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("C","{{ item.id }}")' data-toggle="tooltip"  data-placement="top" title="取消订单">取消订单</a></li>
 									<li class="list-inline-item" style="background-color: #c1ebc9;"><a href="#" data-toggle="tooltip" data-placement="top" title="付款">付款</a></li>
-									{% elif item.state == "已完成" %}
-				    				<li class="list-inline-item"><a  data-toggle="tooltip" data-placement="top" title="Delete"><span class="flaticon-rubbish-bin"></span></a></li>
+									{% elif item.state == "已完成" or item.state == "交易已关闭" %}
+				    				<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("D","{{ item.id }}")' data-toggle="tooltip" data-placement="top" title="Delete"><span class="flaticon-rubbish-bin"></span></a></li>
 				    				{% elif item.state == "进行中" %}
-									<li class="list-inline-item" style="background-color: #c1ebc9;"><a href="/refund_order?id={{ item.id }}" data-toggle="tooltip"  data-placement="top" title="Send Message">退款</a></li>
+									<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("R","{{ item.id }}")'  data-toggle="tooltip"  data-placement="top" title="Send Message">退款</a></li>
 									{% endif %}
 								</ul>
 							</div>
