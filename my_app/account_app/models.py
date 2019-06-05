@@ -111,7 +111,10 @@ class course(models.Model):
     teacherID=models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     date_created = models.DateTimeField(('date joined'), default=timezone.now)
     courseName=models.CharField(max_length=256)
-    time=models.DateTimeField()
+    endTime=models.DateField(null=True)
+    startTime=models.DateField(null=True)
+    courseStartTime=models.TimeField(null=True)
+    courseEndTime = models.TimeField(null=True)
     peopleNum=models.IntegerField(default=1)
     courseContent=models.TextField()
     state=models.IntegerField(null=False)#2代表删除 0代表未开课 1代表已结束
