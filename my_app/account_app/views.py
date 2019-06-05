@@ -1,10 +1,11 @@
 from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect
-from .models import UserProfile
+from .models import UserProfile,course_order
 from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from .models import course
 from django.http import JsonResponse
+from datetime import datetime
 
 import json
 
@@ -79,7 +80,7 @@ def profile_person_info(request):
 @csrf_exempt
 def protect1(request):
     if request.session.get('is_login', None):
-        return render(request, 'me.html')
+        return render(request,'page-blog-list.html')
     else:
        return  render(request, 'index.html')
 
@@ -225,4 +226,11 @@ def info_course(request):
         else:
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False})
     if request.method == 'POST':
-        pass
+        if request.POST.get('operation') == 'purchase':
+            state = request.POST.get('state')
+            courseID_id = request.GET.get('id')
+            user = UserProfile.objects.get(email = request.session['user_email'])
+            course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
+        else:
+            print("留言")
+
