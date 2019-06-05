@@ -163,7 +163,8 @@ class course_order(models.Model):
         (u'UP', u'Unpaid'),
         (u'N', u'Not finish'),
         (u'R', u'Refund'),
-    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP
+        (u'CL', u'Close'),
+    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP,CL为交易已关闭（未支付状态下选择取消课程变为交易已关闭）
     state=models.CharField(max_length=4,choices=STATE_CHOICE)
     class Meta:
         db_table = 'course_order'
