@@ -19,8 +19,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-
-
 urlpatterns = [
        #path('admin/', admin.site.urls),
        url(r'^$', views.protect1),
@@ -29,6 +27,10 @@ urlpatterns = [
        url(r'^login_validate$', views.login_validate),
        url(r'^me$', views.me),
        url(r'^logout$', views.logout),
+       url(r'^info_course/$', views.info_course),
+       url(r'^profile_change_password$', views.profile_change_password, name='profile_change_password'),
+       url(r'^profile_person_info$', views.profile_person_info, name='profile_person_info'),
+       url(r'^page-blog-list$',views.homepage),
        url(r'^order$', BoughtCourse.BoughtCourseInfo),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

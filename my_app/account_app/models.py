@@ -119,7 +119,7 @@ class course(models.Model):
     courseContent=models.TextField()
     state=models.IntegerField(null=False)#2代表删除 0代表未开课 1代表已结束
     tag=models.TextField()
-    price=models.FloatField()
+    price=models.FloatField(null=False,default=0)
     picture1=models.ImageField(null=True)
     picture1 = models.ImageField(null=True)
     picture2 = models.ImageField(null=True)

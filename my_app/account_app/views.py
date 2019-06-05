@@ -1,10 +1,11 @@
 from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect
-from .models import UserProfile
+from .models import UserProfile,course_order
 from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from .models import course
 from django.http import JsonResponse
+from datetime import datetime
 
 import json
 
@@ -79,7 +80,7 @@ def profile_person_info(request):
 @csrf_exempt
 def protect1(request):
     if request.session.get('is_login', None):
-        return render(request, 'me.html')
+        return render(request,'page-blog-list.html')
     else:
        return  render(request, 'index.html')
 
@@ -131,11 +132,11 @@ def login(request):
                         return redirect('/page-blog-list')
                         return render(request,'/page-blog-list.html')
                     else:
-                        return render(request, 'page-blog-list.html', {'mes1': "password is invalid."})
+                        return render(request, 'index.html', {'mes1': "password is invalid."})
                 else:
-                    return render(request, 'page-blog-list.html', {'mes1': "email not found."})
+                    return render(request, 'index.html', {'mes1': "email not found."})
         else:
-               return render(request, 'page-blog-list.html',{'error':form.errors,'form1': form})
+               return render(request, 'index.html',{'error':form.errors,'form1': form})
 
     return render(request, 'page-blog-list.html')
 
@@ -220,9 +221,16 @@ def info_course(request):
         id = request.GET.get('id')
         c = course.objects.get(ID=id)
         teacher = UserProfile.objects.get(userID=c.teacherID_id)
-        if request.session.get('is_login', None):
+        if request.session.get('is_login', None) & request.session['identity']=='S':
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True})
         else:
             return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False})
     if request.method == 'POST':
-        pass
+        if request.POST.get('operation') == 'purchase':
+            state = request.POST.get('state')
+            courseID_id = request.GET.get('id')
+            user = UserProfile.objects.get(email = request.session['user_email'])
+            course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
+        else:
+            print("留言")
+
