@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import course
 from django.http import JsonResponse
 from datetime import datetime
+from django.db import connection
 
 import json
 
@@ -218,27 +219,102 @@ def homepage(request):
 @csrf_exempt
 def info_course(request):
     if request.method == 'GET': #使用？id=xxx传参
-        id = request.GET.get('id')
-        c = course.objects.get(ID=id)
+        courseID_id = request.GET.get('id')
+        commentTable = "comment_" + courseID_id
+        with connection.cursor() as cursor:
+            # 执行sql语句
+            sql = """SELECT * FROM '%s'""" % (commentTable)
+            cursor.execute(sql)
+            # 查出一条数据
+            # row = cursor.fetchone()
+            # 查出所有数据
+            rows = cursor.fetchall()
+            cursor.close()
+        comments_raw = [[] for _ in range(len(rows))]
+        comments = []
+        index = []
+        for i,row in enumerate(rows):
+           #row[2]为to_floor
+            if row[2] == 0:
+                comments_raw[i].append(row)
+                index.append(row[0])
+            else:
+                for j,item in enumerate(index):
+                    if row[2]==item:
+                        comments_raw[item-1].append(row)
+                        break
+        '''
+        删掉空元素
+        for i,comment_raw in enumerate(comments_raw):
+            if comment_raw == []:
+                continue
+            comments.append(comment_raw)
+        print(comments)'''
+        # 把二维数组拆开
+        for i,comment_raw in enumerate(comments_raw):
+            if comment_raw == []:
+                continue
+            for comment_item in comment_raw:
+                dict = {
+                    'floor_id': comment_item[0],
+                    'from_name': comment_item[1],
+                    'to_floor': comment_item[2],
+                    'to_name': comment_item[3],
+                    'send_time': comment_item[4],
+                    'content': comment_item[5]
+                }
+                comments.append(dict)
+        print("这是comment")
+        print(comments)
+        c = course.objects.get(ID=courseID_id)
         teacher = UserProfile.objects.get(userID=c.teacherID_id)
+        '''测试comments内容
+        for comment in comments:
+            if len(comment)!=1:
+                print("显示")
+                print(comment[0])
+                for i in range(1,len(comment)):
+                    print("楼中楼显示")
+                    print(comment[i])
+            else:
+                print("显示")
+                print(comment)
+        #测试comments内容
+        for comment in comments:
+            print("\n\n")
+            print(comment)'''
         #并没有写进身份
         #print(request.session['identity'])
-        if request.session.get('is_login', None) :
-            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True})
+        if request.session.get('is_login', None) & c.left > 0:
+            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True,'comments':comments})
         else:
-            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False})
+            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False,'comments':comments})
     if request.method == 'POST':
         if request.POST.get('operation') == 'purchase':
             state = request.POST.get('state')
             courseID_id = request.GET.get('id')
             user = UserProfile.objects.get(email = request.session['user_email'])
+            c_obj = course.objects.get(ID=courseID_id)
+            course.objects.filter(ID=courseID_id).update(left=c_obj.left - 1)
+            course.objects.filter(ID=courseID_id).update(taken=c_obj.taken + 1)
             course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
         else:
             courseID_id = request.GET.get('id')
-            review = request.POST.get('review')
-            to = request.POST.get('to')              #to使用的是楼层编号，楼主代表0
-            username=request.session['username']    #from使用的是发送人名字
+            commentTable = "comment_" + courseID_id
+            content = request.POST.get('review')
+            to_name = request.POST.get('to_name')
+            to_floor = request.POST.get('to_id')
+            from_name=request.session['username']
+            send_time=datetime.now()
             #插入数据库
-            #course_order.objects.create(date_created=datetime.now(),from=username,to=to,review=review)
+            with connection.cursor() as cursor:
+                # 执行sql语句
+                sql = """INSERT INTO '%s' (from_name,to_floor,to_name,send_time,content) VALUES ('%s','%d','%s','%s','%s')""" % (
+                    commentTable, from_name, int(to_floor), to_name, send_time, content)
+                cursor.execute(sql)
+                cursor.close()
+            print("成功")
+            return redirect("/?id=")
+            #course_order.objects.create(send_time=datetime.now(),from_name=from_name,to_name=to_name,to_floor=to_floor,content=content)
 
 

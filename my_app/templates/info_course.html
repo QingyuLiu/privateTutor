@@ -30,6 +30,7 @@
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         httpRequest.send('operation=purchase;state=UP');
         alert("您可以在个人主页中查看该未付款订单！");
+        window.location.reload()
 	}
 	function purchase_success(){
         var httpRequest = new XMLHttpRequest();
@@ -37,13 +38,12 @@
         httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         httpRequest.send('operation=purchase;state=N');
         alert("购买成功！");
+        window.location.reload()
 	}
-	function redirect(){
-	    var node = event.srcElement;
-	    var par = node.parentNode;
-	    var sibling = par.childNodes;
-	    var p = sibling[0].childNodes
-        alert(par);
+	function redirect(floor,username){
+		document.getElementById("hint").innerHTML = "回复：";
+	    document.getElementById("to_id").innerHTML = floor;
+        document.getElementById("to_name").innerHTML = username;
 	}
 	function reply(){
         var review = document.getElementById("review").value;
@@ -51,16 +51,19 @@
             alert("写点什么吧！");
         }
         else{
-            var to = document.getElementById("to_id").innerText;
+            var to_id = document.getElementById("to_id").innerText;
+            var to_name = document.getElementById("to_name").innerText;
             var httpRequest = new XMLHttpRequest();
             httpRequest.open('POST','', true);
             httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-            var args='operation=reply&review='+review+'&to='+to;
+            var args='operation=reply&review='+review+'&to_id='+to_id+"&to_name="+to_name;
             console.log(args)
             httpRequest.send(args);
             alert("回复成功！");
             document.getElementById("to_id").innerHTML = "0";
             document.getElementById("to_name").innerHTML = "楼主";
+            document.getElementById("review").value = "";
+            window.location.reload()
         }
 	}
 	/*
@@ -143,7 +146,7 @@
                         <label class="col-sm-3 control-label">课程价格：</label><label style="display:none"></label>
                         <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.price}}</h5><label style="display:none"></label>
                         <label class="col-sm-3 control-label">课程时间：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.time}}</h5><label style="display:none"></label>
+                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.courseStartTime}} - {{course.courseEndTime}}</h5><label style="display:none"></label>
                         <label class="col-sm-3 control-label">课程讲师：</label><label style="display:none"></label>
                         <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.teacherID}}</h5><label style="display:none"></label>
                         <label class="col-sm-3 control-label">微信支付：</label><label style="display:none"></label>
@@ -612,7 +615,7 @@
 									<div class="icon text-thm"><span class="flaticon-timeline"></span></div>
 									<div class="details">
 										<p>时间</p>
-										<p>{{course.time}}</p>
+										<p>{{course.courseStartTime}} - {{course.courseEndTime}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
@@ -633,14 +636,14 @@
 									<div class="icon text-thm"><span class="flaticon-team"></span></div>
 									<div class="details">
 										<p>课程余量</p>
-										<p>15</p>
+										<p>{{course.left}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-user"></span></div>
 									<div class="details">
 										<p>已购人数</p>
-										<p>5</p>
+										<p>{{course.taken}}</p>
 									</div>
 								</div>
 							</div>
@@ -653,22 +656,37 @@
 						<div class="col-lg-12">
 							<div class="candidate_review_posted style2">
 								<h4 class="title mb30">留言</h4>
-								<div class="details">
-									<img class="img-fluid rounded-circle float-left" src="../static/images/team/1.jpg" alt="1.jpg">
-									<div>
-                                        <label style="color:#78B334">#</label>
-                                        <label id="floor" style="color:#78B334">1</label>
-                                        <label id="name">小怪兽2019</label>
-										<a onclick="redirect()" href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
-									</div>
-									<ul class="meta">
-										<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span> 2019/5/23</a></li>
-									</ul>
-									<p>去年上过Mrs.李华的英语冲刺，高考英语从50分到150！感谢老师！</p>
-                                    <div class="details" style="margin-left:100px;">
-                                        <!--复制上一个div内容-->
-								    </div>
-								</div>
+								{% for comment in comments %}
+									{% if comment.to_floor == 0 %}
+										<div class="details">
+											<img class="img-fluid rounded-circle float-left" src="../static/images/team/1.jpg" alt="1.jpg">
+											<div>
+												<label style="color:#78B334">#</label>
+												<label style="color:#78B334">{{ comment.floor_id }}</label>
+												<label >{{ comment.from_name }}</label>
+												<!--外层用单引号，里面用双引号传值-->
+												<a onclick='redirect("{{ comment.floor_id }}","{{ comment.from_name}}")' href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
+											</div>
+											<ul class="meta">
+												<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span>  {{ comment.send_time }}</a></li>
+											</ul>
+											<p>{{ comment.content }}</p>
+										</div>
+									{% else %}
+										<div class="details" style="margin-left:100px;">
+											<img class="img-fluid rounded-circle float-left" src="../static/images/team/1.jpg" alt="1.jpg">
+											<div>
+												<label style="color:#78B334">#</label>
+												<label style="color:#78B334">{{ comment.floor_id }}</label>
+												<label >{{ comment.from_name }}</label>
+											</div>
+											<ul class="meta">
+												<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span>  {{ comment.send_time }}</a></li>
+											</ul>
+											<p>{{ comment.content }}</p>
+										</div>
+									{% endif %}
+								{% endfor %}
 							</div>
 						</div>
 						<div class="col-lg-12">
@@ -676,10 +694,10 @@
 							<div class="candidate_leave_review">
 								<div>
 									<form id="review-form" class="ulockd-mrgn630" action="#" method="post">
-                                        <label class="mb30">回复：</label>
+                                        <label id="hint" class="mb30">回复楼主：</label>
                                         <label style="color:#78B334">#</label>
                                         <label id="to_id" style="color:#78B334">0</label>
-                                        <label id="to_name" style="color:#78B334">楼主</label>
+                                        <label id="to_name" style="color:#78B334">{{teacher.username}}</label>
 										<div class="form-group text-left">
 										    <textarea class="form-control" rows="5" name="review" id="review"></textarea>
                                             <p></p>
