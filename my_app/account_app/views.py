@@ -1,4 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect,HttpResponseRedirect
+from .models import UserProfile,course_order
+from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail, Publish
 from .models import UserProfile
 from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail,Publish
 from .models import UserProfile,course_order
@@ -6,8 +8,9 @@ from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from .models import course, recruitment_info
-import datetime
+from django.http import JsonResponse
 from datetime import datetime
+from django.db import connection
 from django.contrib import messages
 import os
 from .models import course
