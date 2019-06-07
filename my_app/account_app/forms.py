@@ -89,6 +89,19 @@ class ModifyEmail(forms.Form):
         except Exception as e:
             raise forms.ValidationError("enter a valid email address.")
 
+class Publish(forms.Form):
+    start = forms.DateTimeField(label='start',widget=forms.DateTimeInput)
+    end = forms.DateTimeField(label='end', widget=forms.DateTimeInput)
+    def clean(self):
+        try:
+            start = self.cleaned_data.get('start')
+            print("now clean start:")
+            print(start)
+            end = self.cleaned_data.get('end')
+            print("now clean end:")
+            print(end)
+        except Exception as e:
+            raise forms.ValidationError("wrong publishing info!")
 
 
 

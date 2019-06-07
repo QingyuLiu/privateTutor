@@ -430,11 +430,26 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h4 class="breadcrumb_title float-left">Homepage</h4>
-					<!--<ol class="breadcrumb float-right">-->
-					    <!--<li class="breadcrumb-item"><a href="#">Home</a></li>-->
-					    <!--<li class="breadcrumb-item active" aria-current="page">Blog</li>-->
-					<!--</ol>-->
+					<h4 class="breadcrumb_title float-left">{{teacher_student}}</h4>
+					<ol class="breadcrumb float-right">
+					   <form id="form1" action="" method="POST" onsubmit="return check();">
+							<div class="col-sm-12 col-lg-8 col-xl-9">
+									<div class="blog_search_widget">
+									<div class="input-group mb-3">
+										<input type="text" class="form-control" placeholder="Search Here" aria-label="Recipient's username" aria-describedby="button-addon2" name="search_box">
+										<div class="input-group-append">
+											<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><span class="flaticon-search"></span></button>
+										</div>
+									</div>
+									</div>
+							</div>
+						</form>
+						<form id="form2" action="" method="POST" onsubmit="return check();">
+							<button class="btn btn-lg btn-thm" href="#" name="show_recruitment" type="submit">Recruitment</button>
+							<button class="btn btn-lg btn-thm" href="#" name="show_course" type="submit">Course</button>
+						</form>
+					</ol>
+
 				</div>
 			</div>
 		</div>
@@ -443,173 +458,123 @@
 	<!-- Main Blog Post Content -->
 	<section class="blog_post_container bgc-fa">
 		<div class="container">
-			<div class="row">
+				<div class="row">
+
 				<div class="col-lg-8">
+					{% for course_info in course_infos %}
 					<div class="main_blog_post_content">
 						<div class="row">
 							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
 								<div class="blog_grid_post mb35">
 									<div class="thumb">
-										<img class="img-fluid" src="static/images/blog/7.jpg" alt="7.jpg">
+										<img class="img-fluid" src="{{course_info.picture1}}" alt="7.jpg">
 									</div>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
 								<div class="blog_grid_post style2 mb35">
 									<div class="details">
-										<h4>One morning, when Gregor Samsa woke from troubled</h4>
+										<h4>{{course_info.courseName}}</h4>
 										<ul class="post_meta">
 											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<p>{{time}}</p>
+											<li>{{course_info.start_time}}--{{course_info.end_time}}</li>
 											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<p>{{residual}}</p>
+											<li>{{course_info.peopleNum}}</li>
 										</ul>
-										<p>Ravenously while stridently coughed far promiscuner lobster much bled alas lighted together waved upheld more far woolly ahead darn far far bore..</p>
-										<a class="text-thm" href="#">Read More <span class="flaticon-right-arrow pl10"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
-								<div class="blog_grid_post mb35">
-									<div class="thumb">
-										<img class="img-fluid" src="static/images/blog/8.jpg" alt="8.jpg">
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="details">
-										<h4>Illustrated magazine and housed in a nice</h4>
-										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<p>{{time}}</p>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<p>{{residual}}</p>
-										</ul>
-										<p>Ravenously while stridently coughed far promiscuner lobster much bled alas lighted together waved upheld more far woolly ahead darn far far bore..</p>
-										<a class="text-thm" href="#">Read More <span class="flaticon-right-arrow pl10"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
-								<div class="blog_grid_post mb35">
-									<div class="thumb">
-										<img class="img-fluid" src="static/images/blog/9.jpg" alt="9.jpg">
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="details">
-										<h4>Waved about helplessly as he looked.</h4>
-										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<p>{{time}}</p>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<p>{{residual}}</p>
-										</ul>
-										<p>Ravenously while stridently coughed far promiscuner lobster much bled alas lighted together waved upheld more far woolly ahead darn far far bore..</p>
-										<a class="text-thm" href="#">Read More <span class="flaticon-right-arrow pl10"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="thumb">
-										<img class="img-fluid" src="static/images/blog/10.jpg" alt="10.jpg">
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="details">
-										<h4>Waved about helplessly as he looked.</h4>
-										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<p>{{time}}</p>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<p>{{residual}}</p>
-										</ul>
-										<p>Ravenously while stridently coughed far promiscuner lobster much bled alas lighted together waved upheld more far woolly ahead darn far far bore..</p>
-										<a class="text-thm" href="#">Read More <span class="flaticon-right-arrow pl10"></span></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="thumb">
-										<img class="img-fluid" src="static/images/blog/11.jpg" alt="11.jpg">
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
-								<div class="blog_grid_post style2 mb35">
-									<div class="details">
-										<h4>Waved about helplessly as he looked.</h4>
-										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<li><p>{{time}}</p></li>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<p>{{residual}}</p>
-										</ul>
-										<p>Ravenously while stridently coughed far promiscuner lobster much bled alas lighted together waved upheld more far woolly ahead darn far far bore..</p>
-										<a class="text-thm" href="#">Read More <span class="flaticon-right-arrow pl10"></span></a>
+										<p>Content:{{course_info.courseContent}}</p>
+										<form id='form5' action="" method="POST" onsubmit="return check();">
+											<button class="btn btn-lg btn-thm" href="#" name="read_course" type="submit">Read more</button>
+											<input type="hidden" name="course_id" value="{{ course_info.ID }}">
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="main_blog_post_widget_list">
-						<div class="col-sm-12 col-lg-8 col-xl-9">
-							<div class="blog_search_widget">
-							<div class="input-group mb-3">
-								<input type="text" class="form-control" placeholder="Search Here" aria-label="Recipient's username" aria-describedby="button-addon2">
-								<div class="input-group-append">
-							    	<button class="btn btn-outline-secondary" type="button" id="button-addon2"><span class="flaticon-search"></span></button>
+					{% endfor %}
+					{% for recruitment_info in recruitment_infos %}
+					<div class="main_blog_post_content">
+						<div class="row">
+							<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pr15-xl">
+								<div class="blog_grid_post mb35">
+									<div class="thumb">
+										<img class="img-fluid" src="{{recruitment_info.picture1}}" alt="7.jpg">
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 pl15-xl">
+								<div class="blog_grid_post style2 mb35">
+									<div class="details">
+										<h4>{{recruitment_info.recruitmentName}}</h4>
+										<ul class="post_meta">
+											<li><a href="#"><span class="flaticon-clock"></span></a></li>
+											<li>{{recruitment_info.start_time}}--{{recruitment_info.end_time}}</li>
+											<li><a href="#"><span class="flaticon-chat"></span></a></li>
+											<li>{{recruitment_info.peopleNum}}</li>
+										</ul>
+										<p>Content:{{recruitment_info.courseContent}}</p>
+										<form id='form6' action="" method="POST" onsubmit="return check();">
+											<button class="btn btn-lg btn-thm" href="#" name="read_recruitment" type="submit">Read more</button>
+											<input type="hidden" name="re_id" value="{{ recruitment_info.ID }}">
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+					{% endfor %}
+				</div>
+
+
+				<div class="col-lg-4">
+					<div class="main_blog_post_widget_list">
+
 					<div class="my_profile_form_area">
-						<div class="row">
+						<form id='form4' enctype="multipart/form-data" action="" method="POST" onsubmit="return check();">
+							   <input type="file" name="myfile" />
+							   <br><br>
+								<button class="btn btn-lg btn-thm" href="#" name="loadfile" type="submit">Upload</button>
+						</form>
+						<form id="form3" action="" method="POST" onsubmit="return check();">
+							<div class="row">
 							<div class="col-lg-12">
-								<h4 class="fz20 mb20">Publish Recruitment Info</h4>
+								<br>
+								<h4 class="fz20 mb20">Publish {{message}} info</h4>
 							</div>
 							<div class="col-lg-12 mt30">
 								<div class="my_profile_thumb_edit"></div>
 							</div>
 							<div class="col-lg-12">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">Recruitment Title</label>
-							    	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+							    	<label for="formGroupExampleInput2">{{message}} Title</label>
+							    	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" name="title">
 								</div>
 							</div>
 							<div class="col-lg-12">
 								<div class="my_resume_textarea">
 									 <div class="form-group">
-									    <label for="exampleFormControlTextarea1">Recruitment Description</label>
-									    <textarea class="form-control" id="exampleFormControlTextarea1" rows="9">
+									    <label for="exampleFormControlTextarea1">{{message}} Description</label>
+									    <textarea class="form-control" id="exampleFormControlTextarea1" rows="9" name="description">
 									    </textarea>
 									  </div>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">Start Date</label>
-							    	<input type="number" class="form-control" id="formGroupExampleInputDate" placeholder="2010-05-22">
+							    	<label for="formGroupExampleInputDate">Start Time</label>
+									<textarea class="form-control" id="formGroupExampleInputDate" placeholder="2010-05-22 19:00" name="start"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">End date</label>
-							    	<input type="number" class="form-control" id="formGroupExampleInputDate2" placeholder="2012-05-22">
+							    	<label for="formGroupExampleInputDate">End Time</label>
+									<textarea class="form-control" id="formGroupExampleInputDate2" placeholder="2012-05-22 21:00" name="end"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
 							    	<label for="formGroupExampleInput1">Scope</label><br>
-							    	<select class="selectpicker">
+							    	<select class="selectpicker" name="scope">
 										<option>Not limited</option>
 										<option>Preschool children</option>
 										<option>Primary school student</option>
@@ -622,12 +587,13 @@
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
-							    	<label for="formGroupExampleInput1">Type</label><br>
-							    	<select class="selectpicker" multiple data-actions-box="true">
+							    	<label for="formGroupExampleInput1">Tag</label><br>
+							    	<select class="selectpicker" name="tag">
 										<option>Liberal arts</option>
 										<option>Science</option>
 										<option>Engineering Course</option>
 										<option>Arts</option>
+										<option>Others</option>
 										<option>Not limited</option>
 									</select>
 								</div>
@@ -635,7 +601,7 @@
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
 							    	<label for="exampleFormControlInput3">Salary</label><br>
-							    	<select class="selectpicker">
+							    	<select class="selectpicker" name="salary">
 										<option><100/h</option>
 										<option>100/h-150/h</option>
 										<option>150/h-200/h</option>
@@ -646,67 +612,61 @@
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
 							    	<label for="formGroupExampleInput1">Teaching age</label><br>
-							    	<select class="selectpicker">
+							    	<select class="selectpicker" name="teaching_age">
+										<option>< 1 years</option>
 										<option>1-2 years</option>
 										<option>2-3 years</option>
 										<option>3-4 years</option>
 										<option>4-5 years</option>
+										<option>> 5 years</option>
 									</select>
 								</div>
 							</div>
+
 							<div class="col-lg-12">
 								<h4 class="fz18 mb20">Location</h4>
 							</div>
 						    <div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
 							    	<label for="formGroupExampleInput2">City</label>
-							    	<input type="text" class="form-control" id="formGroupExampleInput3" placeholder="">
+							    	<input type="text" class="form-control" id="formGroupExampleInput3" placeholder="" name="city">
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">Region</label>
-							    	<input type="text" class="form-control" id="formGroupExampleInput4" placeholder="">
-								</div>
-							</div>
-							<div class="col-lg-4">
-								<div class="my_profile_input">
-									<a class="btn btn-lg btn-thm" href="#">Publish</a>
+							    	<label for="formGroupExampleInput2">Num</label>
+							    	<input type="text" class="form-control" id="formGroupExampleInput4" placeholder="" name="num">
 								</div>
 							</div>
 
+							<div class="col-lg-4">
+								<div class="my_profile_input">
+									<br>
+									<button class="btn btn-lg btn-thm" href="#" name="submit_info" type="submit">Publish</button>
+								</div>
+							</div>
 						</div>
+						</form>
+						{% if messages %}
+							<script>
+								{% for msg in messages %}
+									alert('{{ msg.message }}');
+								{% endfor %}
+							</script>
+						{% endif %}
 						<br><br>
 					</div>
 
 
-						<div class="blog_category_widget">
-							<h4 class="title">Category</h4>
-							<ul class="list-group">
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Accountancy <span class="badge">(2)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Banking <span class="badge">(2)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Charity & Voluntary <span class="badge">(3)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Digital & Creative <span class="badge">(4)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Estate Agency <span class="badge">(3)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	Graduate <span class="badge">(2)</span>
-								</li>
-								<li class="list-group-item d-flex justify-content-between align-items-center">
-							    	IT Contractor <span class="badge">(6)</span>
-								</li>
-							</ul>
-						</div>
-					</div>
+						<!--<div class="blog_category_widget">-->
+							<!--<h4 class="title">Category</h4>-->
+							<!--<ul class="list-group">-->
+								<!--<li class="list-group-item d-flex justify-content-between align-items-center">-->
+							    	<!--Accountancy <span class="badge"></span>-->
+								<!--</li>-->
+							<!--</ul>-->
+						<!--</div>-->
+					<!--</div>-->
 				</div>
 			</div>
 		</div>
