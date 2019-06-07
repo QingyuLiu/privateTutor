@@ -140,7 +140,7 @@
                 <form role="form" action="ActivityChange" method="post">
                     <div>
                         <label class="col-sm-3 control-label">课程编号：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%" id="courseID_id">{{course.ID}}</h5><label style="display:none"></label>
+                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%" id="courseID">{{course.ID}}</h5><label style="display:none"></label>
                         <label class="col-sm-3 control-label">课程名称：</label><label style="display:none"></label>
                         <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.courseName}}</h5><label style="display:none"></label>
                         <label class="col-sm-3 control-label">课程价格：</label><label style="display:none"></label>
@@ -572,7 +572,7 @@
 							<img class="img-fluid" src="../static/images/partners/cl1.jpg" alt="cl1.jpg">
 						</div>
 						<div class="details">
-							<h3>{{course.courseName}}</h3>
+							<h3>课程：{{course.courseName}}</h3>
 							<p class="text-thm2">{{teacher.username}}</p>
 							<ul class="address_list">
 								<li class="list-inline-item"><a href="#"><span class="flaticon-phone-call text-thm"></span>{{teacher.cellphone}}</a></li>
@@ -665,7 +665,9 @@
 												<label style="color:#78B334">{{ comment.floor_id }}</label>
 												<label >{{ comment.from_name }}</label>
 												<!--外层用单引号，里面用双引号传值-->
+												{% if enable %}
 												<a onclick='redirect("{{ comment.floor_id }}","{{ comment.from_name}}")' href="#review" class="review float-right"><p class="job_chedule text-thm2">回复<p></a>
+												{% endif %}
 											</div>
 											<ul class="meta">
 												<li class="list-inline-item"><a href="#"><span class="flaticon-event"></span>  {{ comment.send_time }}</a></li>
@@ -689,6 +691,7 @@
 								{% endfor %}
 							</div>
 						</div>
+						{% if enable %}
 						<div class="col-lg-12">
 							<h4 class="title">发送留言</h4>
 							<div class="candidate_leave_review">
@@ -707,6 +710,7 @@
 								</div>
 							</div>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -750,7 +754,7 @@
             type:"POST",
             data:{
                 //csrfmiddlewaretoken:{{ csrf_token }}, //必须写在模板中，才会被渲染
-                a:$("#courseID_id").val();
+                a:$("#courseID").val();
                 b:"1"
             },
             success:function () {
