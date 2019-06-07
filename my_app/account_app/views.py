@@ -212,14 +212,14 @@ def homepage(request):
             print("now let's see course id")
             tep = 'info_course/?id='+course_id+'.html'
             print(tep)
-            return render(request,tep)
+            return redirect(tep)
         if "read_recruitment" in request.POST:
             print("read detail information about recruitment")
             re_id = request.POST['re_id']
             print("now let's see recruitment id")
             tep = 'info_course/?id=' + re_id + '.html'
             print(tep)
-            return render(request, tep)
+            return redirect(tep)
         if "submit_info" in request.POST:
             user = get_user_model()
             user = user.objects.get(email=request.session['user_email'])
