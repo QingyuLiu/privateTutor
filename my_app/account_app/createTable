@@ -3,19 +3,25 @@ from django.db import models
 from django.utils import timezone
 def CreateNewMessage(name):
     fields = {
-        "from_id": models.ForeignField('UserProfile',on_delete=models.CASCADE),
-        "to_id": models.ForeignKey('UserProfile',on_delete=models.CASCADE),
+        "floor_id":models.AutoField(primary_key=True)
+        "from_name": models.CharField(max_length=32),
+        "to_floor": models.IntegerField(default=0),
+        "to_name": models.CharField(max_length=32),
         "send_time": models.DateTimeField(default=timezone.now),
         "content": models.TextField(),
-        '__str__': lambda self: '%d %d %s %s' % (
-            self.from_id,
-            self.to_id,
+        '__str__': lambda self: '%d %s %d %s %s %s' % (
+            self.floor_id,
+            self.from_name,
+            self.to_floor,
+            self.to_name,
             self.send_time,
             self.content,
         ), }
     options = {'ordering': [
-        "from_id",
-        "to_id",
+        "floor_id",
+        "from_name",
+        "to_floor",
+        "to_name",
         "send_time",
         "content",
     ], 'verbose_name': 'valued customer', }

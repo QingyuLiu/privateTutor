@@ -56,17 +56,17 @@ class UserProfile(AbstractBaseUser):
     )
     identity=models.CharField(max_length=2,choices = IDENTITY_CHOICE,null=False)
     GENDER_CHOICE = (
-        (u'M', u'Male'),
-        (u'F', u'Female'),
+        (u'男', u'Male'),
+        (u'女', u'Female'),
     )
-    gender = models.CharField(max_length=2, choices=GENDER_CHOICE,default='M')
+    gender = models.CharField(max_length=2, choices=GENDER_CHOICE,default='男')
     age = models.IntegerField(default=20)
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
     cellphone = models.CharField(max_length=12,default="")
     pay_id = models.CharField(max_length=30,default="")
-    zone = models.CharField(max_length=20,default="")
+    zone = models.CharField(max_length=20,default="Beijing,China")
     introduction = models.CharField(max_length=100,default="")
 
     objects = UserProfileManager()  # 创建用户
@@ -110,12 +110,20 @@ class course(models.Model):
     ID=models.AutoField(primary_key=True)
     teacherID=models.ForeignKey('UserProfile',on_delete=models.CASCADE)
     date_created = models.DateTimeField(('date joined'), default=timezone.now)
-    courseName=models.CharField(max_length=256, default='abc')
+    courseName=models.CharField(max_length=256)
+    endTime=models.DateField(null=True)
+    startTime=models.DateField(null=True)
+    courseStartTime=models.TimeField(null=True)
+    courseEndTime = models.TimeField(null=True)
+    # courseName=models.CharField(max_length=256, default='abc')
     start_time=models.DateTimeField(null=True)
     end_time=models.DateTimeField(null=True)
     peopleNum=models.IntegerField(default=1)
     courseContent=models.TextField(default='abc')
     state=models.IntegerField(null=False)#2代表删除 0代表未开课 1代表已结束
+    tag=models.TextField()
+    price=models.FloatField(null=False,default=0)
+    picture1=models.ImageField(null=True)
     tag=models.TextField(default='')
     scope=models.TextField(default='')
     salary=models.TextField(default='')
@@ -177,7 +185,9 @@ class course_order(models.Model):
         (u'UP', u'Unpaid'),
         (u'N', u'Not finish'),
         (u'R', u'Refund'),
-    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP
+        (u'D', u'Delete'),
+        (u'CL', u'Closed'),
+    )#支付后状态为N，课程结束或退款后为C，退款中为R，未支付为UP，D为已经删除，CL为交易已关闭
     state=models.CharField(max_length=4,choices=STATE_CHOICE)
     class Meta:
         db_table = 'course_order'
