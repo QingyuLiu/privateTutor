@@ -300,7 +300,7 @@ def info_course(request):
             course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
         else:
             courseID_id = request.GET.get('id')
-            commentTable = "comment_" + courseID_id
+            commentTable = "my_app_comment_" + courseID_id
             content = request.POST.get('review')
             to_name = request.POST.get('to_name')
             to_floor = request.POST.get('to_id')
