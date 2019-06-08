@@ -450,7 +450,7 @@ def homepage(request):
                                 print("ii")
                                 print(ii)
                                 id = ii.strip('(').strip(')')
-                                tt = 'rcomment_' + id
+                                tt = 'comment_' + id
                                 print("now let's see the table name of this dynamic table:")
                                 print(tt)
                                 options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
