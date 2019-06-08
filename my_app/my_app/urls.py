@@ -28,6 +28,7 @@ urlpatterns = [
        url(r'^me$', views.me),
        url(r'^logout$', views.logout),
        url(r'^info_course/$', views.info_course),
+       url(r'^info_recruitment/$', views.info_recruitment),
        url(r'^profile_change_password$', views.profile_change_password, name='profile_change_password'),
        url(r'^profile_person_info$', views.profile_person_info, name='profile_person_info'),
        url(r'^page-blog-list$',views.homepage),

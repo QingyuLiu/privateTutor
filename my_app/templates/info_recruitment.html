@@ -24,22 +24,6 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 	<script type="text/javascript" defer=true>
-	function purchase_cancel(){
-        var httpRequest = new XMLHttpRequest();
-        httpRequest.open('POST','', true);
-        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        httpRequest.send('operation=purchase;state=UP');
-        alert("您可以在个人主页中查看该未付款订单！");
-        window.location.reload()
-	}
-	function purchase_success(){
-        var httpRequest = new XMLHttpRequest();
-        httpRequest.open('POST','', true);
-        httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        httpRequest.send('operation=purchase;state=N');
-        alert("购买成功！");
-        window.location.reload()
-	}
 	function redirect(floor,username){
 		document.getElementById("hint").innerHTML = "回复：";
 	    document.getElementById("to_id").innerHTML = floor;
@@ -83,84 +67,6 @@
 	</script>
 </head>
 <body>
-
-<!--
-使用form表单提交的情况
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 style="color:#78B334">订单详情</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <!--<h4 class="modal-title" id="myModalLabel">Modify</h4>-注释->
-                </div>
-                <div class="modal-body">
-                    <form role="form" action="ActivityChange" method="post">
-                        <div >
-                            <!--
-                            <label class="col-sm-3 control-label">Activity Name:</label><label style="display:none"></label>
-                            <div class="col-xs-3 col-sm-6">
-                                <input type="text" class="form-control" name="aname">
-                            </div>
-                            -注释->
-                            <label class="col-sm-3 control-label">课程编号：</label><label style="display:none"></label>
-                            <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.ID}}</h5><label style="display:none"></label>
-                            <label class="col-sm-3 control-label">课程名称：</label><label style="display:none"></label>
-                            <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.courseName}}</h5><label style="display:none"></label>
-                            <label class="col-sm-3 control-label">课程价格：</label><label style="display:none"></label>
-                            <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.price}}</h5><label style="display:none"></label>
-                            <label class="col-sm-3 control-label">课程时间：</label><label style="display:none"></label>
-                            <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.time}}</h5><label style="display:none"></label>
-                            <label class="col-sm-3 control-label">课程讲师：</label><label style="display:none"></label>
-                            <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.teacherID}}</h5><label style="display:none"></label>
-                            <label class="col-sm-3 control-label">微信支付：</label><label style="display:none"></label>
-                            <img class="nav_logo_img img-fluid" src="../static/images/qrcode.jpg" alt="header-logo.png">
-                        <!-- <label for="用户名" class="col-sm-2 control-label" style="color:#FF0000;text-align:left;">已存在</label> -注释->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-info" onclick="return Modify()" style="color:white;float: top;">支付成功</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="purchase_cancel();" style="float: top;">稍后支付</button>
-                        </div>
-                    </form>
-                </div><!-- /.modal-content -注释->
-            </div><!-- /.modal-dialog -注释->
-        </div>
-    </div><!-- /.modal -注释->
--->
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 style="color:#78B334">订单详情</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <!--<h4 class="modal-title" id="myModalLabel">Modify</h4>-->
-            </div>
-            <div class="modal-body">
-                <form role="form" action="ActivityChange" method="post">
-                    <div>
-                        <label class="col-sm-3 control-label">课程编号：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%" id="courseID_id">{{course.ID}}</h5><label style="display:none"></label>
-                        <label class="col-sm-3 control-label">课程名称：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.courseName}}</h5><label style="display:none"></label>
-                        <label class="col-sm-3 control-label">课程价格：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.price}}</h5><label style="display:none"></label>
-                        <label class="col-sm-3 control-label">课程时间：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.courseStartTime}} - {{course.courseEndTime}}</h5><label style="display:none"></label>
-                        <label class="col-sm-3 control-label">课程讲师：</label><label style="display:none"></label>
-                        <h5 class="col-sm-3 control-label" style="color:#78B334;max-width: 100%">{{course.teacherID}}</h5><label style="display:none"></label>
-                        <label class="col-sm-3 control-label">微信支付：</label><label style="display:none"></label>
-                        <img class="nav_logo_img img-fluid" src="../static/images/qrcode.jpg" alt="header-logo.png">
-                    </div>
-                    <div class="modal-footer">
-                        <button id="pay_success" type="button" class="btn btn-info" data-dismiss="modal"  onclick="purchase_success()" style="color:white;float: top;">支付成功</button>
-                        <button id="pay_cancel" type="button" class="btn btn-default" data-dismiss="modal" onclick="purchase_cancel();" style="float: top;">稍后支付</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-</div><!-- /.modal -->
 
 <div class="wrapper">
 	<div class="preloader"></div>
@@ -572,23 +478,15 @@
 							<img class="img-fluid" src="../static/images/partners/cl1.jpg" alt="cl1.jpg">
 						</div>
 						<div class="details">
-							<h3>{{course.courseName}}</h3>
-							<p class="text-thm2">{{teacher.username}}</p>
+							<h3>招募：{{recruitment_info.recruitmentName}}</h3>
+							<p class="text-thm2">{{student.username}}</p>
 							<ul class="address_list">
-								<li class="list-inline-item"><a href="#"><span class="flaticon-phone-call text-thm"></span>{{teacher.cellphone}}</a></li>
-								<li class="list-inline-item"><a href="#"><span class="flaticon-mail text-thm"></span> <span class="__cf_email__" data-cfemail="c5a1a0a8aa85b1ada0a8a0a3aab7a0b6b1eba6aaa8">{{teacher.email}}</span></a></li>
+								<li class="list-inline-item"><a href="#"><span class="flaticon-phone-call text-thm"></span>{{student.cellphone}}</a></li>
+								<li class="list-inline-item"><a href="#"><span class="flaticon-mail text-thm"></span> <span class="__cf_email__" data-cfemail="c5a1a0a8aa85b1ada0a8a0a3aab7a0b6b1eba6aaa8">{{studnet.email}}</span></a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
-				{% if enable %}
-				<div class="col-lg-3 col-xl-3">
-					<div class="candidate_personal_overview style2">
-                        <!--onclick="purchase();"-->
-				        <button class="btn btn-block btn-thm mb15" id="purchase" data-toggle="modal" data-target="#myModal" ><span class="flaticon-alarm pr10"></span> 购买课程</button>
-					</div>
-				</div>
-				{% endif %}
 			</div>
 		</div>
 	</section>
@@ -602,54 +500,54 @@
 						<div class="col-lg-12">
 							<div class="row personer_information_company mt0">
 								<div class="col-lg-12">
-									<h4 class="fz20 mb30">课程信息</h4>
+									<h4 class="fz20 mb30">招募信息</h4>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-label"></span></div>
 									<div class="details">
 										<p>标签</p>
-										<p>{{course.tag}}</p>
+										<p>{{recruitmentName.tag}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-timeline"></span></div>
 									<div class="details">
 										<p>时间</p>
-										<p>{{course.courseStartTime}} - {{course.courseEndTime}}</p>
+										<p>{{recruitmentName.startTime}} - {{recruitmentName.endTime}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-paper-plane"></span></div>
 									<div class="details">
-										<p>讲师</p>
-										<p>{{course.teacherID}}</p>
+										<p>范围</p>
+										<p>{{recruitmentName.scope}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-2-squares"></span></div>
 									<div class="details">
-										<p>价格</p>
-										<p>{{course.price}}</p>
+										<p>薪水酬劳</p>
+										<p>{{recruitmentName.price}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-team"></span></div>
 									<div class="details">
-										<p>课程余量</p>
-										<p>{{course.left}}</p>
+										<p>教师年龄要求</p>
+										<p>{{recruitmentName.teaching_age}}</p>
 									</div>
 								</div>
 								<div class="col-sm-4 col-lg-4">
 									<div class="icon text-thm"><span class="flaticon-user"></span></div>
 									<div class="details">
-										<p>已购人数</p>
-										<p>{{course.taken}}</p>
+										<p>教师地点要求</p>
+										<p>{{recruitmentName.city}}</p>
 									</div>
 								</div>
 							</div>
 							<div class="candidate_about_info style2">
-								<h4 class="fz20 mb30">课程详情</h4>
-								<p class="mb30">{{course.courseContent}}</p>
+								<h4 class="fz20 mb30">招募详情</h4>
+								<p class="mb30">{{recruitmentName.courseContent}}</p>
 								</div>
 						</div>
 
@@ -689,6 +587,7 @@
 								{% endfor %}
 							</div>
 						</div>
+						{% if enable %}
 						<div class="col-lg-12">
 							<h4 class="title">发送留言</h4>
 							<div class="candidate_leave_review">
@@ -697,7 +596,7 @@
                                         <label id="hint" class="mb30">回复楼主：</label>
                                         <label style="color:#78B334">#</label>
                                         <label id="to_id" style="color:#78B334">0</label>
-                                        <label id="to_name" style="color:#78B334">{{teacher.username}}</label>
+                                        <label id="to_name" style="color:#78B334">{{student.username}}</label>
 										<div class="form-group text-left">
 										    <textarea class="form-control" rows="5" name="review" id="review"></textarea>
                                             <p></p>
@@ -707,6 +606,7 @@
 								</div>
 							</div>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>
