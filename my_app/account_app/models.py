@@ -124,6 +124,9 @@ class course(models.Model):
     teaching_age=models.TextField(default='')
     city=models.TextField(default='')
     price = models.FloatField(null=False, default=0)
+    left = models.IntegerField(default=1) #剩余位数
+    taken = models.IntegerField(default=1) #已占位数
+    # salary = models.CharField(max_length=256, default='abc')
     # type=models.CharField(max_length=256)
     picture1 = models.ImageField(null=True)
     picture2 = models.ImageField(null=True)
@@ -153,6 +156,7 @@ class recruitment_info(models.Model):
     courseEndTime = models.TimeField(null=True)
     scope = models.TextField(default='')
     price = models.FloatField(null=False, default=0)
+    # salary = models.CharField(max_length=256, default='abc')
     teaching_age = models.TextField(default='')
     city = models.TextField(default='')
     peopleNum = models.IntegerField(default=1)

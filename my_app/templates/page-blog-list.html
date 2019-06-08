@@ -178,7 +178,7 @@
 			                <li><a href="page-faq.html">Faq</a></li>
 			                <li><a href="page-how-it-works.html">How It Works</a></li>
 			                <li><a href="page-invoice.html">Invoice</a></li>
-			                <li><a href="page-log-reg.html">Login/Register</a></li>
+			                <li><button type="submit" class="btn btn-block color-white bgc-gogle">Logout</button></li>
 			                <li><a href="page-pricing.html">Pricing</a></li>
 			                <li><a href="page-terms-and-policies.html">Terms And Policies</a></li>
 			                <li><a href="page-ui-element.html">UI Elements</a></li>
@@ -236,7 +236,7 @@
 										<button type="submit" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
 									</div>
 									<div class="col-lg">
-										<button type="submit" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
+										<button type="submit" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i>Logout</button>
 									</div>
 								</div>
 							</form>
@@ -281,7 +281,7 @@
 										<button type="submit" class="btn btn-block color-white bgc-fb"><i class="fa fa-facebook float-left mt5"></i> Facebook</button>
 									</div>
 									<div class="col-lg">
-										<button type="submit" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Google</button>
+										<button type="submit" class="btn btn-block color-white bgc-gogle"><i class="fa fa-google float-left mt5"></i> Logout</button>
 									</div>
 								</div>
 							</form>
@@ -413,14 +413,14 @@
 		                <li><a href="page-faq.html">Faq</a></li>
 		                <li><a href="page-how-it-works.html">How It Works</a></li>
 		                <li><a href="page-invoice.html">Invoice</a></li>
-		                <li><a href="page-log-reg.html">Login/Register</a></li>
+		                <li><button type="submit" class="btn btn-block color-white bgc-gogle">Logout</button></li>
 		                <li><a href="page-pricing.html">Pricing</a></li>
 		                <li><a href="page-terms-and-policies.html">Terms And Policies</a></li>
 		                <li><a href="page-ui-element.html">UI Elements</a></li>
 					</ul>
 				</li>
 				<li><a href="#">Post a Job</a></li>
-				<li><a class="text-thm" href="page-log-reg.html">Login/Register</a></li>
+				<li><button type="submit" class="btn btn-block color-white bgc-gogle">Logout</button></li>
 			</ul>
 		</nav>
 	</div>
@@ -476,12 +476,19 @@
 									<div class="details">
 										<h4>{{course_info.courseName}}</h4>
 										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<li>{{course_info.start_time}}--{{course_info.end_time}}</li>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<li>{{course_info.peopleNum}}</li>
+											<li><a href="#"><span class="flaticon-clock"> Schedule</span></a></li>
+											<li>{{course_info.startTime}} {{course_info.courseStartTime}}--{{course_info.endTime}} {{course_info.courseEndTime}}</li>
+											<li><a href="#"><span class="flaticon-chat"> Num:  {{course_info.left}}</span></a></li>
+											<li><a href="#"><span class="flaticon-chat"> Price:  {{course_info.price}}</span></a></li>
+											<li><a href="#"><span class="flaticon-chat"> Location:  {{course_info.city}}</span></a></li>
+											<p>Num:  {{course_info.left}}</p>
+											<!--<li><a href="#"><span class="flaticon-clock"></span></a></li>-->
+											<p>Price:  {{course_info.price}}</p>
+											<!--<li><a href="#"><span class="flaticon-chat"></span></a></li>-->
+											<p>Location:  {{course_info.city}}</p>
 										</ul>
-										<p>Content:{{course_info.courseContent}}</p>
+										<li><a href="#"><span class="flaticon-chat"> Content</span></a></li>
+										<p>{{course_info.courseContent}}</p>
 										<form id='form5' action="" method="POST" onsubmit="return check();">
 											<button class="btn btn-lg btn-thm" href="#" name="read_course" type="submit">Read more</button>
 											<input type="hidden" name="course_id" value="{{ course_info.ID }}">
@@ -507,12 +514,17 @@
 									<div class="details">
 										<h4>{{recruitment_info.recruitmentName}}</h4>
 										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"></span></a></li>
-											<li>{{recruitment_info.start_time}}--{{recruitment_info.end_time}}</li>
-											<li><a href="#"><span class="flaticon-chat"></span></a></li>
-											<li>{{recruitment_info.peopleNum}}</li>
+											<li><a href="#"><span class="flaticon-clock"> Schedule</span></a></li>
+											<p>{{recruitment_info.startTime}} {{recruitment_info.courseStartTime}}--{{recruitment_info.endTime}} {{recruitment_info.courseEndTime}}</p>
+											<li><a href="#"><span class="flaticon-chat"> Info</span></a></li>
+											<p>Num:  {{recruitment_info.peopleNum}}</p>
+											<!--<li><a href="#"><span class="flaticon-clock"></span></a></li>-->
+											<p>Price:  {{recruitment_info.price}}</p>
+											<!--<li><a href="#"><span class="flaticon-chat"></span></a></li>-->
+											<p>Location:  {{recruitment_info.city}}</p>
 										</ul>
-										<p>Content:{{recruitment_info.courseContent}}</p>
+										<li><a href="#"><span class="flaticon-chat"> Content</span></a></li>
+										<p>{{recruitment_info.courseContent}}</p>
 										<form id='form6' action="" method="POST" onsubmit="return check();">
 											<button class="btn btn-lg btn-thm" href="#" name="read_recruitment" type="submit">Read more</button>
 											<input type="hidden" name="re_id" value="{{ recruitment_info.ID }}">
@@ -561,14 +573,26 @@
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">Start Time</label>
-									<textarea class="form-control" id="formGroupExampleInputDate" placeholder="2010-05-22 19:00" name="start"></textarea>
+							    	<label for="formGroupExampleInputDate">Start Date</label>
+									<textarea class="form-control" id="formGroupExampleInputDate1" placeholder="2010-05-22" name="start_date"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<div class="my_profile_input form-group">
+									<label for="formGroupExampleInputDate">Start Time</label>
+									<textarea class="form-control" id="formGroupExampleInputDate2" placeholder="19:00" name="start_time"></textarea>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+								<div class="my_profile_input form-group">
+							    	<label for="formGroupExampleInputDate">End Date</label>
+									<textarea class="form-control" id="formGroupExampleInputDate3" placeholder="2012-05-22" name="end_date"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
 							    	<label for="formGroupExampleInputDate">End Time</label>
-									<textarea class="form-control" id="formGroupExampleInputDate2" placeholder="2012-05-22 21:00" name="end"></textarea>
+									<textarea class="form-control" id="formGroupExampleInputDate4" placeholder="21:00" name="end_time"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
@@ -598,15 +622,21 @@
 									</select>
 								</div>
 							</div>
+							<!--<div class="col-md-6 col-lg-6">-->
+								<!--<div class="my_profile_select_box form-group">-->
+							    	<!--<label for="exampleFormControlInput3">Price</label><br>-->
+							    	<!--<select class="selectpicker" name="price">-->
+										<!--<option><100/h</option>-->
+										<!--<option>100/h-150/h</option>-->
+										<!--<option>150/h-200/h</option>-->
+										<!--<option>>200/h</option>-->
+									<!--</select>-->
+								<!--</div>-->
+							<!--</div>-->
 							<div class="col-md-6 col-lg-6">
-								<div class="my_profile_select_box form-group">
-							    	<label for="exampleFormControlInput3">Salary</label><br>
-							    	<select class="selectpicker" name="salary">
-										<option><100/h</option>
-										<option>100/h-150/h</option>
-										<option>150/h-200/h</option>
-										<option>>200/h</option>
-									</select>
+								<div class="my_profile_input form-group">
+							    	<label for="formGroupExampleInput2">Salary</label>
+							    	<input type="text" class="form-control" id="formGroupExampleInput5" placeholder="/h" name="price">
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">

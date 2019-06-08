@@ -15,7 +15,7 @@ from django.contrib import messages
 import os
 from .models import course
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, date, time
 from django.db import connection
 
 import json
@@ -132,6 +132,7 @@ def login(request):
                     print(password)
                     if person.password == password:
                         if request.session.get('is_login', None):
+                            print("already logged in")
                             return render(request, 'page-blog-list.html', {'mes1': "You have already been login."})
                         request.session['user_email'] = email
                         request.session['is_login'] = True
@@ -147,9 +148,9 @@ def login(request):
                         request.session['pay_id'] = person.pay_id
                         request.session['zone'] = person.zone
                         request.session['introduction'] = person.introduction
-
+                        print("now to homepage")
                         return redirect('/page-blog-list')
-                        # return render(request,'/page-blog-list.html')
+                        #return render(request,'page-blog-list.html')
                     else:
                         return render(request, 'index.html', {'mes1': "password is invalid."})
                 else:
@@ -196,6 +197,7 @@ def homepage(request):
     print("now I can see the user----")
     print(user)
     iden = user.identity
+    print(request.method)
     if iden == 'S':
         bb = 'Recruitment'
         cc = 'Hello, dear student!'
@@ -243,14 +245,14 @@ def homepage(request):
             print("read detail information about course")
             course_id = request.POST['course_id']
             print("now let's see course id")
-            tep = 'info_course/?id='+course_id+'.html'
+            tep = 'info_course/?id='+course_id
             print(tep)
             return redirect(tep)
         if "read_recruitment" in request.POST:
             print("read detail information about recruitment")
             re_id = request.POST['re_id']
             print("now let's see recruitment id")
-            tep = 'info_course/?id=' + re_id + '.html'
+            tep = 'info_course/?id=' + re_id
             print(tep)
             return redirect(tep)
         if "submit_info" in request.POST:
@@ -262,25 +264,84 @@ def homepage(request):
                 if form.is_valid():
                     title = request.POST['title']
                     description = request.POST['description']
-                    start = request.POST['start']
-                    end = request.POST['end']
+                    start_date = request.POST['start_date']
+                    start_time = request.POST['start_time']
+                    end_date = request.POST['end_date']
+                    end_time = request.POST['end_time']
                     scope = request.POST['scope']
                     tag = request.POST['tag']
-                    salary = request.POST['salary']
+                    price = request.POST['price']
                     teaching_age = request.POST['teaching_age']
                     city = request.POST['city']
                     num = request.POST['num']
-                    dstart = datetime.strptime(start, '%Y-%m-%d %H:%M')
-                    dend = datetime.strptime(end, '%Y-%m-%d %H:%M')
+                    dstart_date = datetime.strptime(start_date, '%Y-%m-%d')
+                    dstart_time = datetime.strptime(start_time,'%H:%M')
+                    dend_date = datetime.strptime(end_date, '%Y-%m-%d')
+                    dend_time = datetime.strptime(end_time,'%H:%M')
+                    global route
                     route = fileRoute
                     print("now show you the start time and end time")
-                    print(dstart)
-                    print(dend)
+                    print(dstart_date)
+                    print(dstart_time)
+                    print(dend_date)
+                    print(dend_time)
                     print(route)
                     print(num)
-                    if dstart < dend:
-                        if dstart > datetime.now():
-                            r = recruitment_info(stuID_id=user.userID, date_created=datetime.now(), courseContent=description, tag=tag, recruitmentName=title, start_time=start, end_time=end, scope=scope, salary=salary, teaching_age=teaching_age, city=city, peopleNum=num, picture1=route)
+                    if dstart_date == dend_date:
+                        if dstart_time < dend_time:
+                            if dstart_date > datetime.now():
+                                r = recruitment_info(stuID_id=user.userID, date_created=datetime.now(), courseContent=description, tag=tag, recruitmentName=title, startTime=dstart_date,courseStartTime=dstart_time, endTime=dend_date, courseEndTime=dend_time, scope=scope, price=price, teaching_age=teaching_age, city=city, peopleNum=num, picture1=route)
+                                r.save()
+                                recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
+                                res = recruitment.filter(courseContent=description)
+                                print("now let's see the res")
+                                print(res)
+                                i = str(res[0])
+                                print("i")
+                                print(i)
+                                temp = i.split( )
+                                print("temp")
+                                print(temp)
+                                ii = temp[2]
+                                print("ii")
+                                print(ii)
+                                id = ii.strip('(').strip(')')
+                                tt = 'rcomment_' + id
+                                print("now let's see the table name of this dynamic table:")
+                                print(tt)
+                                aa = 1
+                                aa = 0
+                                fields = {
+                                        'id_from': models.IntegerField(max_length=100),
+                                        'id_to': models.IntegerField(max_length=100),
+                                        'content': models.CharField(max_length=1024),
+                                        'time': models.DateTimeField(max_length=10240),
+                                        '__str__': lambda self: '%s %s %s %s' % (self.id_from, self.id_to, self.content, self.time),
+                                        }
+                                options = {'ordering': ['id_from', 'id_to', 'content', 'time'], 'verbose_name': 'valued customer' }
+                                course_message = create_model1(tt, fields, options=options, app_label='my_app',
+                                                                 module='models')
+                                install(course_message)  # 同步到数据库中
+                                return render(request, 'page-blog-list.html', {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
+                            else:
+                                print("start date is earlier than current date")
+                                recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
+                                messages.error(request, "wrong time!")
+                                return render(request, 'page-blog-list.html',
+                                        {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
+                                         'error': 'wrong time'})
+                        else:
+                            print("start time is later than current time")
+                            recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
+                            messages.error(request, "wrong time!")
+                            return render(request, 'page-blog-list.html',
+                                          {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
+                                           'error': 'wrong time'})
+                    elif dstart_date < dend_date:
+                        if dstart_date > datetime.now():
+                            r = recruitment_info(stuID_id=user.userID, date_created=datetime.now(),
+                                                 courseContent=description, tag=tag, recruitmentName=title, startTime=dstart_date, courseStartTime=dstart_time, endTime=dend_date, courseEndTime=dend_time, scope=scope, price=price,
+                                                 teaching_age=teaching_age, city=city, peopleNum=num, picture1=route)
                             r.save()
                             recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
                             res = recruitment.filter(courseContent=description)
@@ -289,7 +350,7 @@ def homepage(request):
                             i = str(res[0])
                             print("i")
                             print(i)
-                            temp = i.split( )
+                            temp = i.split()
                             print("temp")
                             print(temp)
                             ii = temp[2]
@@ -302,33 +363,38 @@ def homepage(request):
                             aa = 1
                             aa = 0
                             fields = {
-                                    'id_from': models.IntegerField(max_length=100),
-                                    'id_to': models.IntegerField(max_length=100),
-                                    'content': models.CharField(max_length=1024),
-                                    'time': models.DateTimeField(max_length=10240),
-                                    '__str__': lambda self: '%s %s %s %s' % (self.id_from, self.id_to, self.content, self.time),
-                                    }
-                            options = {'ordering': ['id_from', 'id_to', 'content', 'time'], 'verbose_name': 'valued customer' }
+                                'id_from': models.IntegerField(max_length=100),
+                                'id_to': models.IntegerField(max_length=100),
+                                'content': models.CharField(max_length=1024),
+                                'time': models.DateTimeField(max_length=10240),
+                                '__str__': lambda self: '%s %s %s %s' % (
+                                self.id_from, self.id_to, self.content, self.time),
+                            }
+                            options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
+                                       'verbose_name': 'valued customer'}
                             course_message = create_model1(tt, fields, options=options, app_label='my_app',
-                                                             module='models')
+                                                           module='models')
                             install(course_message)  # 同步到数据库中
-                            return render(request, 'page-blog-list.html', {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
+                            return render(request, 'page-blog-list.html',
+                                          {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
                         else:
                             print("start date is earlier than current date")
                             recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
                             messages.error(request, "wrong time!")
                             return render(request, 'page-blog-list.html',
-                                    {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
-                                     'error': 'wrong time'})
+                                          {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
+                                           'error': 'wrong time'})
                     else:
                         print("start date is later than end date")
                         recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
                         messages.error(request, "wrong time!")
                         return render(request, 'page-blog-list.html',
-                                {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
-                                 'error': 'wrong time'})
+                                      {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc,
+                                       'error': 'wrong time'})
                 else:
+                    print("form is not valid!")
                     recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
+                    messages.error(request, "wrong time!")
                     return render(request, 'page-blog-list.html',{'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc, 'error':form.errors})
             else:
                 print("in submitting the info(teacher)")
@@ -336,30 +402,89 @@ def homepage(request):
                 if form.is_valid():
                     title = request.POST['title']
                     description = request.POST['description']
-                    start = request.POST['start']
-                    end = request.POST['end']
+                    start_date = request.POST['start_date']
+                    start_time = request.POST['start_time']
+                    end_date = request.POST['end_date']
+                    end_time = request.POST['end_time']
                     scope = request.POST['scope']
                     tag = request.POST['tag']
-                    salary = request.POST['salary']
+                    price = request.POST['price']
                     teaching_age = request.POST['teaching_age']
                     city = request.POST['city']
                     num = request.POST['num']
-                    dstart = datetime.strptime(start, '%Y-%m-%d %H:%M')
-                    dend = datetime.strptime(end, '%Y-%m-%d %H:%M')
+                    dstart_date = datetime.strptime(start_date, '%Y-%m-%d')
+                    dstart_time = datetime.strptime(start_time, '%H:%M')
+                    dend_date = datetime.strptime(end_date, '%Y-%m-%d')
+                    dend_time = datetime.strptime(end_time, '%H:%M')
                     route = fileRoute
-                    if dstart < dend:
-                        if dstart > datetime.now():
-                            c = course(teacherID_id=user.userID, date_created=datetime.now(), courseContent=description, tag=tag, courseName=title, start_time=start, end_time=end, scope=scope, salary=salary, teaching_age=teaching_age, city=city, peopleNum=num, state=0, picture1=route)
+                    print("now show you the start time and end time")
+                    print(dstart_date)
+                    print(dstart_time)
+                    print(dend_date)
+                    print(dend_time)
+                    route = fileRoute
+                    if dstart_date == dend_date:
+                        if dstart_time < dend_time:
+                            if dstart_date > datetime.now():
+                                c = course(teacherID_id=user.userID, date_created=datetime.now(), courseContent=description, tag=tag, courseName=title, startTime=dstart_date,courseStartTime=dstart_time, endTime=dend_date, courseEndTime=dend_time, scope=scope, price=price, teaching_age=teaching_age, city=city, peopleNum=num,left=num, taken=0, state=0, picture1=route)
+                                c.save()
+                                course_info = course.objects.filter(state=0).order_by('-date_created')
+                                res = course_info.filter(courseContent = description)
+                                fields = {
+                                    'id_from': models.IntegerField(max_length=100),
+                                    'id_to': models.IntegerField(max_length=100),
+                                    'content': models.CharField(max_length=1024),
+                                    'time': models.DateTimeField(max_length=10240),
+                                    '__str__': lambda self: '%s %s %s %s' % (
+                                    self.id_from, self.id_to, self.content, self.time),
+                                }
+                                print("now let's see the res")
+                                print(res)
+                                i = str(res[0])
+                                print("i")
+                                print(i)
+                                temp = i.split()
+                                print("temp")
+                                print(temp)
+                                ii = temp[2]
+                                print("ii")
+                                print(ii)
+                                id = ii.strip('(').strip(')')
+                                tt = 'rcomment_' + id
+                                print("now let's see the table name of this dynamic table:")
+                                print(tt)
+                                options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
+                                           'verbose_name': 'valued customer'}
+                                course_message = create_model1(tt, fields, options=options,
+                                                               app_label='my_app',
+                                                               module='models')
+                                install(course_message)  # 同步到数据库中
+                                return render(request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                            else:
+                                course_info = course.objects.filter(state=0).order_by('-date_created')
+                                messages.error(request, "Start date should be later than current date!")
+                                return (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                        else:
+                            course_info = course.objects.filter(state=0).order_by('-date_created')
+                            messages.error(request, "Start time should be earlier than end time!")
+                            return (request, 'page-blog-list.html',
+                                    {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                    elif dstart_date < dend_date:
+                        if dstart_date > datetime.now():
+                            c = course(teacherID_id=user.userID, date_created=datetime.now(), courseContent=description,
+                                       tag=tag, courseName=title, startTime=dstart_date,courseStartTime=dstart_time, endTime=dend_date, courseEndTime=dend_time, scope=scope,
+                                       price=price, teaching_age=teaching_age, city=city, peopleNum=num, state=0, left=num, taken=0,
+                                       picture1=route)
                             c.save()
                             course_info = course.objects.filter(state=0).order_by('-date_created')
-                            res = course_info.filter(courseContent = description)
+                            res = course_info.filter(courseContent=description)
                             fields = {
                                 'id_from': models.IntegerField(max_length=100),
                                 'id_to': models.IntegerField(max_length=100),
                                 'content': models.CharField(max_length=1024),
                                 'time': models.DateTimeField(max_length=10240),
                                 '__str__': lambda self: '%s %s %s %s' % (
-                                self.id_from, self.id_to, self.content, self.time),
+                                    self.id_from, self.id_to, self.content, self.time),
                             }
                             print("now let's see the res")
                             print(res)
@@ -382,11 +507,13 @@ def homepage(request):
                                                            app_label='my_app',
                                                            module='models')
                             install(course_message)  # 同步到数据库中
-                            return render(request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                            return render(request, 'page-blog-list.html',
+                                          {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                         else:
                             course_info = course.objects.filter(state=0).order_by('-date_created')
                             messages.error(request, "Start date should be later than current date!")
-                            return (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                            return (request, 'page-blog-list.html',
+                                    {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                     else:
                         course_info = course.objects.filter(state=0).order_by('-date_created')
                         messages.error(request, "Start date should be earlier than end date!")
@@ -394,6 +521,7 @@ def homepage(request):
                                 {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                 else:
                     course_info = course.objects.filter(state=0).order_by('-date_created')
+                    messages.error(request, "wrong time!")
                     return (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc, 'error': form.errors})
             pass
         else:
@@ -426,37 +554,69 @@ def homepage(request):
                 messages.success(request, "successfully loaded!")
                 return render(request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
             else:
-                print("in other conditions//upload pictures//student")
-                myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
-                print("now lets see myfile")
-                print(myFile)
-                if not myFile:
-                    print("no my file")
+                if iden == 'S':
+                    print("in other conditions//upload pictures//student")
+                    myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
+                    print("now lets see myfile")
+                    print(myFile)
+                    if not myFile:
+                        print("no my file")
+                        recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
+                        messages.error(request, "You do not choose any file!")
+                        return render(request, 'page-blog-list.html',
+                                      {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
+                        # return HttpResponse("no file to upload!")
+                    else:
+                        route = os.path.join(
+                            "/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng", myFile.name)
+                        print("the route is")
+                        print(route)
+                        print("now let's see the route stipped")
+                        temp = route.split('/')
+                        r = temp[6] + '/' + temp[7] + '/' + temp[8] + '/' + temp[9]
+                        print(r)
+                        fileRoute = r
+                        destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
+                        for chunk in myFile.chunks():  # 分块写入文件
+                            destination.write(chunk)
+                        destination.close()
+                    # return HttpResponse("upload over!")
                     recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
-                    messages.error(request, "You do not choose any file!")
+                    messages.success(request, "successfully loaded!")
                     return render(request, 'page-blog-list.html',
                                   {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
-                    # return HttpResponse("no file to upload!")
-                else:
-                    route = os.path.join(
-                        "/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng", myFile.name)
-                    print("the route is")
-                    print(route)
-                    print("now let's see the route stipped")
-                    temp = route.split('/')
-                    r = temp[6] + '/' + temp[7] + '/' + temp[8] + '/' + temp[9]
-                    print(r)
-                    fileRoute = r
-                    destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
-                    for chunk in myFile.chunks():  # 分块写入文件
-                        destination.write(chunk)
-                    destination.close()
-                # return HttpResponse("upload over!")
-                recruitment = recruitment_info.objects.filter(isDelete=0).order_by('-date_created')
-                messages.success(request, "successfully loaded!")
-                return render(request, 'page-blog-list.html',
-                              {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
-
+                elif iden == 'T':
+                    print("in other conditions//upload pictures//teacher")
+                    myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
+                    print("now lets see myfile")
+                    print(myFile)
+                    if not myFile:
+                        print("no my file")
+                        course_info = course.objects.filter(state=0).order_by('-date_created')
+                        messages.error(request, "You do not choose any file!")
+                        return render(request, 'page-blog-list.html',
+                                      {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                        # return HttpResponse("no file to upload!")
+                    else:
+                        route = os.path.join(
+                            "/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng",
+                            myFile.name)
+                        print("the route is")
+                        print(route)
+                        print("now let's see the route stipped")
+                        temp = route.split('/')
+                        r = temp[6] + '/' + temp[7] + '/' + temp[8] + '/' + temp[9]
+                        print(r)
+                        fileRoute = r
+                        destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
+                        for chunk in myFile.chunks():  # 分块写入文件
+                            destination.write(chunk)
+                        destination.close()
+                    # return HttpResponse("upload over!")
+                    course_info = course.objects.filter(state=0).order_by('-date_created')
+                    messages.success(request, "successfully loaded!")
+                    return render(request, 'page-blog-list.html',
+                                  {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
 #
 # @csrf_exempt
 # def password_modify(request):
