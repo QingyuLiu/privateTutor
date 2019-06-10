@@ -17,7 +17,8 @@ from .models import course
 from django.http import JsonResponse
 from datetime import datetime, date, time
 from django.db import connection
-
+from django.utils import timezone
+from .createTable import CreateNewMessage
 import json
 from .models import install, create_model1
 from django.db import models
@@ -314,16 +315,23 @@ def homepage(request):
                                 print(tt)
                                 aa = 1
                                 aa = 0
+                                # CreateNewMessage(tt)
                                 fields = {
-                                        'id_from': models.IntegerField(max_length=100),
-                                        'id_to': models.IntegerField(max_length=100),
-                                        'content': models.CharField(max_length=1024),
-                                        'time': models.DateTimeField(max_length=10240),
-                                        '__str__': lambda self: '%s %s %s %s' % (self.id_from, self.id_to, self.content, self.time),
-                                        }
-                                options = {'ordering': ['id_from', 'id_to', 'content', 'time'], 'verbose_name': 'valued customer' }
+                                    "floor_id": models.AutoField(primary_key=True),
+                                    "from_name": models.CharField(max_length=32),
+                                    "to_floor": models.IntegerField(default=0),
+                                    "to_name": models.CharField(max_length=32),
+                                    "send_time": models.DateTimeField(default=timezone.now),
+                                    "content": models.TextField(),
+                                    '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                        self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
+                                        self.content),
+                                }
+                                options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
+                                                        'content'],
+                                           'verbose_name': 'valued customer'}
                                 course_message = create_model1(tt, fields, options=options, app_label='my_app',
-                                                                 module='models')
+                                                               module='models')
                                 install(course_message)  # 同步到数据库中
                                 return render(request, 'page-blog-list.html', {'recruitment_infos': recruitment, 'message': bb, 'teacher_student': cc})
                             else:
@@ -365,15 +373,19 @@ def homepage(request):
                             print(tt)
                             aa = 1
                             aa = 0
+                            # CreateNewMessage(tt)
+
                             fields = {
-                                'id_from': models.IntegerField(max_length=100),
-                                'id_to': models.IntegerField(max_length=100),
-                                'content': models.CharField(max_length=1024),
-                                'time': models.DateTimeField(max_length=10240),
-                                '__str__': lambda self: '%s %s %s %s' % (
-                                self.id_from, self.id_to, self.content, self.time),
+                                "floor_id":models.AutoField(primary_key=True),
+                                "from_name":models.CharField(max_length=32),
+                                "to_floor": models.IntegerField(default=0),
+                                "to_name": models.CharField(max_length=32),
+                                "send_time": models.DateTimeField(default=timezone.now),
+                                "content": models.TextField(),
+                                '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                self.floor_id, self.from_name,self.to_floor, self.to_name, self.send_time, self.content),
                             }
-                            options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
+                            options = {'ordering': ['floor_id', 'from_name','to_floor', 'to_name', 'send_time','content'],
                                        'verbose_name': 'valued customer'}
                             course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                            module='models')
@@ -433,14 +445,7 @@ def homepage(request):
                                 c.save()
                                 course_info = course.objects.filter(state=0).order_by('-date_created')
                                 res = course_info.filter(courseContent = description)
-                                fields = {
-                                    'id_from': models.IntegerField(max_length=100),
-                                    'id_to': models.IntegerField(max_length=100),
-                                    'content': models.CharField(max_length=1024),
-                                    'time': models.DateTimeField(max_length=10240),
-                                    '__str__': lambda self: '%s %s %s %s' % (
-                                    self.id_from, self.id_to, self.content, self.time),
-                                }
+
                                 print("now let's see the res")
                                 print(res)
                                 i = str(res[0])
@@ -456,10 +461,21 @@ def homepage(request):
                                 tt = 'comment_' + id
                                 print("now let's see the table name of this dynamic table:")
                                 print(tt)
-                                options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
+                                fields = {
+                                    "floor_id": models.AutoField(primary_key=True),
+                                    "from_name": models.CharField(max_length=32),
+                                    "to_floor": models.IntegerField(default=0),
+                                    "to_name": models.CharField(max_length=32),
+                                    "send_time": models.DateTimeField(default=timezone.now),
+                                    "content": models.TextField(),
+                                    '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                        self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
+                                        self.content),
+                                }
+                                options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
+                                                        'content'],
                                            'verbose_name': 'valued customer'}
-                                course_message = create_model1(tt, fields, options=options,
-                                                               app_label='my_app',
+                                course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                                module='models')
                                 install(course_message)  # 同步到数据库中
                                 return render(request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
@@ -481,14 +497,7 @@ def homepage(request):
                             c.save()
                             course_info = course.objects.filter(state=0).order_by('-date_created')
                             res = course_info.filter(courseContent=description)
-                            fields = {
-                                'id_from': models.IntegerField(max_length=100),
-                                'id_to': models.IntegerField(max_length=100),
-                                'content': models.CharField(max_length=1024),
-                                'time': models.DateTimeField(max_length=10240),
-                                '__str__': lambda self: '%s %s %s %s' % (
-                                    self.id_from, self.id_to, self.content, self.time),
-                            }
+
                             print("now let's see the res")
                             print(res)
                             i = str(res[0])
@@ -504,10 +513,21 @@ def homepage(request):
                             tt = 'comment_' + id
                             print("now let's see the table name of this dynamic table:")
                             print(tt)
-                            options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
-                                       'verbose_name': 'valued customer'}
-                            course_message = create_model1(tt, fields, options=options,
-                                                           app_label='my_app',
+                            fields = {
+                                "floor_id": models.AutoField(primary_key=True),
+                                "from_name": models.CharField(max_length=32),
+                                "to_floor": models.IntegerField(default=0),
+                                "to_name": models.CharField(max_length=32),
+                                "send_time": models.DateTimeField(default=timezone.now),
+                                "content": models.TextField(),
+                                '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                    self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
+                                    self.content),
+                            }
+                            options = {
+                                'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time', 'content'],
+                                'verbose_name': 'valued customer'}
+                            course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                            module='models')
                             install(course_message)  # 同步到数据库中
                             return render(request, 'page-blog-list.html',
@@ -725,7 +745,9 @@ def info_course(request):
         print("这是comment")
         print(comments)
         c = course.objects.get(ID=courseID_id)
-        teacher = UserProfile.objects.get(userID=c.teacherID)
+        print("这是c")
+        print(c.teacherID_id)
+        teacher = UserProfile.objects.get(userID=c.teacherID_id)
         '''测试comments内容
         for comment in comments:
             if len(comment)!=1:
@@ -743,10 +765,20 @@ def info_course(request):
             print(comment)'''
         #并没有写进身份
         #print(request.session['identity'])
-        if request.session.get('is_login', None) & c.left > 0:
-            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': True,'comments':comments})
+        user = get_user_model()
+        user = user.objects.get(email=request.session['user_email'])
+        iden = user.identity
+        if request.session.get('is_login', None):
+            if c.left > 0:
+                if iden == 'S':
+                    return render(request, 'info_course.html',{'course': c, 'teacher': teacher, 'enable': True, 'enable_comment': True,'comments': comments})
+                else:
+                    return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False,'enable_comment': True,'comments':comments})
+            else:
+                return render(request, 'info_course.html',{'course': c, 'teacher': teacher, 'enable': False, 'enable_comment': True,'comments': comments})
         else:
-            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False,'comments':comments})
+            print('进来2')
+            return render(request, 'info_course.html', {'course': c,'teacher': teacher,'enable': False,'enable_comment': False,'comments':comments})
     if request.method == 'POST':
         if request.POST.get('operation') == 'purchase':
             state = request.POST.get('state')
@@ -757,6 +789,7 @@ def info_course(request):
             course.objects.filter(ID=courseID_id).update(taken=c_obj.taken + 1)
             course_order.objects.create(date_created=datetime.now(),state=state, courseID=courseID_id, stuID=user.userID)
         else:
+            print('留言')
             courseID_id = request.GET.get('id')
             commentTable = "my_app_comment_" + courseID_id
             content = request.POST.get('review')
@@ -764,6 +797,8 @@ def info_course(request):
             to_floor = request.POST.get('to_id')
             from_name=request.session['username']
             send_time=datetime.now()
+            print('内容')
+            print(content)
             #插入数据库
             with connection.cursor() as cursor:
                 # 执行sql语句
@@ -845,9 +880,9 @@ def info_recruitment(request):
         #并没有写进身份
         #print(request.session['identity'])
         if request.session.get('is_login', None):
-            return render(request, 'info_recruitment.html', {'recruitment_info': r,'student': student,'enable': True,'comments':comments})
+            return render(request, 'info_recruitment.html', {'recruitment_info': r,'student': student,'enable_comment': True,'comments':comments})
         else:
-            return render(request, 'info_recruitment.html', {'recruitment_info': r,'student': student,'enable': False,'comments':comments})
+            return render(request, 'info_recruitment.html', {'recruitment_info': r,'student': student,'enable_comment': False,'comments':comments})
     if request.method == 'POST':
         recruitment_id = request.GET.get('id')
         commentTable = "my_app_comment_" + recruitment_id
@@ -856,6 +891,8 @@ def info_recruitment(request):
         to_floor = request.POST.get('to_id')
         from_name= request.session['username']
         send_time=datetime.now()
+        print('这是内容')
+        print(content)
         #插入数据库
         with connection.cursor() as cursor:
             # 执行sql语句
