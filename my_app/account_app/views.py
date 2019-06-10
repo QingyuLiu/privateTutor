@@ -199,12 +199,12 @@ def homepage(request):
     iden = user.identity
     print(request.method)
     if iden == 'S':
-        bb = 'Recruitment'
-        cc = 'Hello, dear student!'
+        bb = '招募'
+        cc = '欢迎您，亲爱的学生 ' + user.username + '!'
         id = 'S'
     else:
-        bb = 'Course'
-        cc = 'Hello, dear teacher!'
+        bb = '课程'
+        cc = '欢迎您，亲爱的老师 ' + user.username + '!'
         id = 'T'
     if request.method == 'GET':
         print("now in homepage get")
@@ -463,11 +463,11 @@ def homepage(request):
                             else:
                                 course_info = course.objects.filter(state=0).order_by('-date_created')
                                 messages.error(request, "Start date should be later than current date!")
-                                return (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
+                                return render (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                         else:
                             course_info = course.objects.filter(state=0).order_by('-date_created')
                             messages.error(request, "Start time should be earlier than end time!")
-                            return (request, 'page-blog-list.html',
+                            return render (request, 'page-blog-list.html',
                                     {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                     elif dstart_date < dend_date:
                         if dstart_date > datetime.now():
@@ -512,18 +512,21 @@ def homepage(request):
                         else:
                             course_info = course.objects.filter(state=0).order_by('-date_created')
                             messages.error(request, "Start date should be later than current date!")
-                            return (request, 'page-blog-list.html',
+                            return render(request, 'page-blog-list.html',
                                     {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                     else:
                         course_info = course.objects.filter(state=0).order_by('-date_created')
                         messages.error(request, "Start date should be earlier than end date!")
-                        return (request, 'page-blog-list.html',
+                        return render(request, 'page-blog-list.html',
                                 {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                 else:
                     course_info = course.objects.filter(state=0).order_by('-date_created')
                     messages.error(request, "wrong time!")
-                    return (request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc, 'error': form.errors})
+                    return render(request, 'page-blog-list.html', {'course_infos': course_info, 'message': bb, 'teacher_student': cc, 'error': form.errors})
             pass
+        if "logout" in request.POST:
+            request.session['is_login'] = False
+            return render(request, 'index.html')
         else:
             if aa == 1:
                 print("in other conditions//upload pictures//teacher")
@@ -537,15 +540,15 @@ def homepage(request):
                     return render(request, 'page-blog-list.html',{'course_infos': course_info, 'message': bb, 'teacher_student': cc})
                     #return HttpResponse("no file to upload!")
                 else:
-                    route = os.path.join("/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng", myFile.name)
+                    route = os.path.join("../static/images/test_feng", myFile.name)
                     print("the route is")
                     print(route)
                     print("now let's see the route stipped")
                     temp = route.split('/')
-                    r = temp[6]+'/'+temp[7]+'/'+temp[8]+'/'+temp[9]
+                    r = temp[1] + '/' + temp[2] + '/' + temp[3] + '/' + temp[4]
                     print(r)
                     fileRoute = r
-                    destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
+                    destination = open(fileRoute, 'wb+')  # 打开特定的文件进行二进制的写操作
                     for chunk in myFile.chunks():  # 分块写入文件
                         destination.write(chunk)
                     destination.close()
@@ -568,15 +571,15 @@ def homepage(request):
                         # return HttpResponse("no file to upload!")
                     else:
                         route = os.path.join(
-                            "/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng", myFile.name)
+                            "../static/images/test_feng", myFile.name)
                         print("the route is")
                         print(route)
                         print("now let's see the route stipped")
                         temp = route.split('/')
-                        r = temp[6] + '/' + temp[7] + '/' + temp[8] + '/' + temp[9]
+                        r = temp[1] + '/' + temp[2] + '/' + temp[3] + '/' + temp[4]
                         print(r)
                         fileRoute = r
-                        destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
+                        destination = open(fileRoute, 'wb+')  # 打开特定的文件进行二进制的写操作
                         for chunk in myFile.chunks():  # 分块写入文件
                             destination.write(chunk)
                         destination.close()
@@ -599,16 +602,16 @@ def homepage(request):
                         # return HttpResponse("no file to upload!")
                     else:
                         route = os.path.join(
-                            "/Users/fengyushan/PycharmProjects/privateTutor/my_app/static/images/test_feng",
+                            "../static/images/test_feng",
                             myFile.name)
                         print("the route is")
                         print(route)
                         print("now let's see the route stipped")
                         temp = route.split('/')
-                        r = temp[6] + '/' + temp[7] + '/' + temp[8] + '/' + temp[9]
+                        r =  temp[1] + '/' + temp[2] + '/' + temp[3] + '/' + temp[4]
                         print(r)
                         fileRoute = r
-                        destination = open(route, 'wb+')  # 打开特定的文件进行二进制的写操作
+                        destination = open(fileRoute, 'wb+')  # 打开特定的文件进行二进制的写操作
                         for chunk in myFile.chunks():  # 分块写入文件
                             destination.write(chunk)
                         destination.close()

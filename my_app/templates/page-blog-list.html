@@ -178,7 +178,6 @@
 			                <li><a href="page-faq.html">Faq</a></li>
 			                <li><a href="page-how-it-works.html">How It Works</a></li>
 			                <li><a href="page-invoice.html">Invoice</a></li>
-			                <li><button type="submit" class="btn btn-block color-white bgc-gogle">Logout</button></li>
 			                <li><a href="page-pricing.html">Pricing</a></li>
 			                <li><a href="page-terms-and-policies.html">Terms And Policies</a></li>
 			                <li><a href="page-ui-element.html">UI Elements</a></li>
@@ -188,9 +187,12 @@
 		                <a href="page-employer-post-job.html"><span class="title">Post a Job</span></a>
 		            </li>
 		        </ul>
+				<form id="form7" action="" method="POST" onsubmit="return check();">
 		        <ul class="sign_up_btn pull-right dn-smd mt10">
-	                <li><a href="#" class="btn btn-md" data-toggle="modal" data-target="#exampleModalCenter">Log<span class="dn-md">in</span>/Reg<span class="dn-md">ister</span></a></li>
+	                <!--<li><a href="#" class="btn btn-md" data-toggle="modal" data-target="#exampleModalCenter">Log<span class="dn-md">in</span>/Reg<span class="dn-md">ister</span></a></li>-->
+					<button type="submit" class="btn btn-block color-white bgc-gogle" name="logout">注销</button>
 	            </ul><!-- Button trigger modal -->
+				</form>
 		    </nav>
 		    <!-- End of Responsive Menu -->
 		</div>
@@ -436,7 +438,7 @@
 							<div class="col-sm-12 col-lg-8 col-xl-9">
 									<div class="blog_search_widget">
 									<div class="input-group mb-3">
-										<input type="text" class="form-control" placeholder="Search Here" aria-label="Recipient's username" aria-describedby="button-addon2" name="search_box">
+										<input type="text" class="form-control" placeholder="用标签搜索" aria-label="Recipient's username" aria-describedby="button-addon2" name="search_box">
 										<div class="input-group-append">
 											<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><span class="flaticon-search"></span></button>
 										</div>
@@ -445,8 +447,9 @@
 							</div>
 						</form>
 						<form id="form2" action="" method="POST" onsubmit="return check();">
-							<button class="btn btn-lg btn-thm" href="#" name="show_recruitment" type="submit">Recruitment</button>
-							<button class="btn btn-lg btn-thm" href="#" name="show_course" type="submit">Course</button>
+							<button class="btn btn-lg btn-thm" href="#" name="show_recruitment" type="submit">招募信息</button>
+							<button class="btn btn-lg btn-thm" href="#" name="show_course" type="submit">课程信息</button>
+
 						</form>
 					</ol>
 
@@ -476,20 +479,21 @@
 									<div class="details">
 										<h4>{{course_info.courseName}}</h4>
 										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"> Schedule</span></a></li>
+											<li><a href="#"><span class="flaticon-clock"></span></a></li>
 											<li>{{course_info.startTime}} {{course_info.courseStartTime}}--{{course_info.endTime}} {{course_info.courseEndTime}}</li>
-											<li><a href="#"><span class="flaticon-chat"> Num:  {{course_info.left}}</span></a></li>
-											<li><a href="#"><span class="flaticon-chat"> Price:  {{course_info.price}}</span></a></li>
-											<li><a href="#"><span class="flaticon-chat"> Location:  {{course_info.city}}</span></a></li>
-											<p>Num:  {{course_info.left}}</p>
+											<!--<li><a href="#"><span class="flaticon-chat"> Num:  {{course_info.left}}</span></a></li>-->
+											<!--<li><a href="#"><span class="flaticon-chat"> Price:  {{course_info.price}}</span></a></li>-->
+											<!--<li><a href="#"><span class="flaticon-chat"> Location:  {{course_info.city}}</span></a></li>-->
+											<p>余量:  {{course_info.left}}</p>
 											<!--<li><a href="#"><span class="flaticon-clock"></span></a></li>-->
-											<p>Price:  {{course_info.price}}</p>
+											<p>价格:  {{course_info.price}}</p>
 											<!--<li><a href="#"><span class="flaticon-chat"></span></a></li>-->
-											<p>Location:  {{course_info.city}}</p>
+											<p>位置:  {{course_info.city}}</p>
 										</ul>
-										<li><a href="#"><span class="flaticon-chat"> Content</span></a></li>
-										<p>{{course_info.courseContent}}</p>
+										<li><a href="#"><span class="flaticon-chat"> {{course_info.courseContent}}</span></a></li>
+										<br>
 										<form id='form5' action="" method="POST" onsubmit="return check();">
+											<br>
 											<button class="btn btn-lg btn-thm" href="#" name="read_course" type="submit">Read more</button>
 											<input type="hidden" name="course_id" value="{{ course_info.ID }}">
 										</form>
@@ -514,18 +518,18 @@
 									<div class="details">
 										<h4>{{recruitment_info.recruitmentName}}</h4>
 										<ul class="post_meta">
-											<li><a href="#"><span class="flaticon-clock"> Schedule</span></a></li>
-											<p>{{recruitment_info.startTime}} {{recruitment_info.courseStartTime}}--{{recruitment_info.endTime}} {{recruitment_info.courseEndTime}}</p>
-											<li><a href="#"><span class="flaticon-chat"> Info</span></a></li>
-											<p>Num:  {{recruitment_info.peopleNum}}</p>
 											<!--<li><a href="#"><span class="flaticon-clock"></span></a></li>-->
-											<p>Price:  {{recruitment_info.price}}</p>
+											<li><a href="#"><span class="flaticon-clock"> {{recruitment_info.startTime}} {{recruitment_info.courseStartTime}}--{{recruitment_info.endTime}} {{recruitment_info.courseEndTime}}</span></a></li>
+											<p>余量:  {{recruitment_info.peopleNum}}</p>
+											<!--<li><a href="#"><span class="flaticon-clock"></span></a></li>-->
+											<p>价格:  {{recruitment_info.price}}</p>
 											<!--<li><a href="#"><span class="flaticon-chat"></span></a></li>-->
-											<p>Location:  {{recruitment_info.city}}</p>
+											<p>位置:  {{recruitment_info.city}}</p>
 										</ul>
-										<li><a href="#"><span class="flaticon-chat"> Content</span></a></li>
-										<p>{{recruitment_info.courseContent}}</p>
+										<li><a href="#"><span class="flaticon-chat"></span> {{recruitment_info.courseContent}}</a></li>
+										<br>
 										<form id='form6' action="" method="POST" onsubmit="return check();">
+											<br>
 											<button class="btn btn-lg btn-thm" href="#" name="read_recruitment" type="submit">Read more</button>
 											<input type="hidden" name="re_id" value="{{ recruitment_info.ID }}">
 										</form>
@@ -545,27 +549,25 @@
 						<form id='form4' enctype="multipart/form-data" action="" method="POST" onsubmit="return check();">
 							   <input type="file" name="myfile" />
 							   <br><br>
-								<button class="btn btn-lg btn-thm" href="#" name="loadfile" type="submit">Upload</button>
+								<button class="btn btn-lg btn-thm" href="#" name="loadfile" type="submit">上传图片</button>
 						</form>
 						<form id="form3" action="" method="POST" onsubmit="return check();">
 							<div class="row">
 							<div class="col-lg-12">
 								<br>
-								<h4 class="fz20 mb20">Publish {{message}} info</h4>
+								<h4 class="fz20 mb20">发布{{message}}信息</h4>
 							</div>
-							<div class="col-lg-12 mt30">
-								<div class="my_profile_thumb_edit"></div>
-							</div>
+
 							<div class="col-lg-12">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">{{message}} Title</label>
+							    	<label for="formGroupExampleInput2">{{message}}名称</label>
 							    	<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" name="title">
 								</div>
 							</div>
 							<div class="col-lg-12">
 								<div class="my_resume_textarea">
 									 <div class="form-group">
-									    <label for="exampleFormControlTextarea1">{{message}} Description</label>
+									    <label for="exampleFormControlTextarea1">{{message}}详情</label>
 									    <textarea class="form-control" id="exampleFormControlTextarea1" rows="9" name="description">
 									    </textarea>
 									  </div>
@@ -573,31 +575,31 @@
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">Start Date</label>
+							    	<label for="formGroupExampleInputDate">开课日期</label>
 									<textarea class="form-control" id="formGroupExampleInputDate1" placeholder="2010-05-22" name="start_date"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-									<label for="formGroupExampleInputDate">Start Time</label>
+									<label for="formGroupExampleInputDate">开课时间</label>
 									<textarea class="form-control" id="formGroupExampleInputDate2" placeholder="19:00" name="start_time"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">End Date</label>
+							    	<label for="formGroupExampleInputDate">结课日期</label>
 									<textarea class="form-control" id="formGroupExampleInputDate3" placeholder="2012-05-22" name="end_date"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInputDate">End Time</label>
+							    	<label for="formGroupExampleInputDate">结课时间</label>
 									<textarea class="form-control" id="formGroupExampleInputDate4" placeholder="21:00" name="end_time"></textarea>
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
-							    	<label for="formGroupExampleInput1">Scope</label><br>
+							    	<label for="formGroupExampleInput1">教育范围</label><br>
 							    	<select class="selectpicker" name="scope">
 										<option>Not limited</option>
 										<option>Preschool children</option>
@@ -611,7 +613,7 @@
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
-							    	<label for="formGroupExampleInput1">Tag</label><br>
+							    	<label for="formGroupExampleInput1">标签</label><br>
 							    	<select class="selectpicker" name="tag">
 										<option>Liberal arts</option>
 										<option>Science</option>
@@ -635,13 +637,13 @@
 							<!--</div>-->
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">Salary</label>
+							    	<label for="formGroupExampleInput2">价格</label>
 							    	<input type="text" class="form-control" id="formGroupExampleInput5" placeholder="/h" name="price">
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_select_box form-group">
-							    	<label for="formGroupExampleInput1">Teaching age</label><br>
+							    	<label for="formGroupExampleInput1">教龄</label><br>
 							    	<select class="selectpicker" name="teaching_age">
 										<option>< 1 years</option>
 										<option>1-2 years</option>
@@ -653,18 +655,18 @@
 								</div>
 							</div>
 
-							<div class="col-lg-12">
-								<h4 class="fz18 mb20">Location</h4>
-							</div>
+							<!--<div class="col-lg-12">-->
+								<!--<h4 class="fz18 mb20">位置</h4>-->
+							<!--</div>-->
 						    <div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">City</label>
+							    	<label for="formGroupExampleInput2">城市</label>
 							    	<input type="text" class="form-control" id="formGroupExampleInput3" placeholder="" name="city">
 								</div>
 							</div>
 							<div class="col-md-6 col-lg-6">
 								<div class="my_profile_input form-group">
-							    	<label for="formGroupExampleInput2">Num</label>
+							    	<label for="formGroupExampleInput2">容量</label>
 							    	<input type="text" class="form-control" id="formGroupExampleInput4" placeholder="" name="num">
 								</div>
 							</div>
@@ -672,7 +674,7 @@
 							<div class="col-lg-4">
 								<div class="my_profile_input">
 									<br>
-									<button class="btn btn-lg btn-thm" href="#" name="submit_info" type="submit">Publish</button>
+									<button class="btn btn-lg btn-thm" href="#" name="submit_info" type="submit">发布</button>
 								</div>
 							</div>
 						</div>
