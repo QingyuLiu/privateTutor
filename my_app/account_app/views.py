@@ -258,6 +258,9 @@ def homepage(request):
         if "submit_info" in request.POST:
             user = get_user_model()
             user = user.objects.get(email=request.session['user_email'])
+            id = user.identity
+            print("aaaaaaaaa let's see his identity!!!!!")
+            print(id)
             if id == 'S':
                 print("in submitting the info(student)")
                 form = Publish(request.POST)
@@ -498,7 +501,7 @@ def homepage(request):
                             print("ii")
                             print(ii)
                             id = ii.strip('(').strip(')')
-                            tt = 'rcomment_' + id
+                            tt = 'comment_' + id
                             print("now let's see the table name of this dynamic table:")
                             print(tt)
                             options = {'ordering': ['id_from', 'id_to', 'content', 'time'],
@@ -673,6 +676,8 @@ def homepage(request):
 def info_course(request):
     if request.method == 'GET': #使用？id=xxx传参
         courseID_id = request.GET.get('id')
+        print("the course id is")
+        print(courseID_id)
         commentTable = "my_app_comment_" + courseID_id
         with connection.cursor() as cursor:
             # 执行sql语句
