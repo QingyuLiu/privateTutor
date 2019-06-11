@@ -34,6 +34,8 @@ urlpatterns = [
        url(r'^page-blog-list$',views.homepage),
        url(r'^order$', BoughtCourse.BoughtCourseInfo),
        url(r'^notification$', BoughtCourse.notifications),
-       url(r'^check',views.check_teacher_info)
+       url(r'^check',views.check_teacher_info),
+       url(r'^profile_published_content',views.myPublish),
+       url(r'^video$',views.video)
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

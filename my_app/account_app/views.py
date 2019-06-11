@@ -666,53 +666,85 @@ def homepage(request):
                     messages.success(request, "successfully loaded!")
                     return render(request, 'page-blog-list.html',
                                   {'course_infos': course_info, 'message': bb, 'teacher_student': cc})
-#
-# @csrf_exempt
-# def password_modify(request):
-#     form = ModifyPassword(request.POST)
-#     if form.is_valid():
-#         oldpassword= form.cleaned_data['password3']
-#         newpassword = form.cleaned_data['password4']
-#         # user = auth.authenticate(email=email, password=password)
-#         user = get_user_model()
-#
-#         person = user.objects.get(email=request.session.get('user_email'))
-#         if(person.password==oldpassword):
-#             request.session['user_password'] = newpassword
-#             person.password=newpassword
-#             person.save()
-#             render(request, 'password_modify.html', {'mes1': "Success modify password!"})
-#         else:
-#             return render(request, 'password_modify.html', {'mes': "password is invalid."})
-#
-#     return render(request, 'password_modify.html', {'error': form.errors, 'form': form})
-#
-# @csrf_exempt
-# def email_modify(request):
-#     form = ModifyEmail(request.POST)
-#     if form.is_valid():
-#         newemail= form.cleaned_data['newemail']
-#         # user = auth.authenticate(email=email, password=password)
-#         user = get_user_model()
-#         person = user.objects.get(email=request.session.get('user_email'))
-#         request.session['user_email'] = newemail
-#         person.email= newemail
-#         person.save()
-#         return render(request, 'email_modify.html', {'mes1': "Success modify email!"})
-#
-#     return render(request, 'email_modify.html', {'error': form.errors, 'form': form})
-#
-# def email_modify1(request):
-#     if request.session.get('is_login', None):
-#        return render(request, 'email_modify.html',{'email':request.session.get('username')})
-#     else:
-#         return render(request, 'login.html')
-#
-# def password_modify1(request):
-#     if request.session.get('is_login', None):
-#         return render(request, 'password_modify.html',{'email':request.session.get('username')})
-#     else:
-#         return render(request, 'login.html')
+
+@csrf_exempt
+def myPublish(request):
+    user = get_user_model()
+    user = user.objects.get(email=request.session['user_email'])
+    iden = user.identity
+    id = user.userID
+    if request.method == 'GET':
+        print("now in mypublish get")
+        if iden == 'S':
+            print("now in student(recruitment)")
+            re_infos = recruitment_info.objects.filter(isDelete=0,stuID_id=id).order_by('-date_created')
+            print(re_infos)
+            judge = 1
+            return render(request,'profile_published_content.html',{'re_infos': re_infos, "judge":judge})
+        if iden == 'T':
+            print("now in teacher(course)")
+            co_infos = course.objects.filter(state=0, teacherID_id=id).order_by('-date_created')
+            print(co_infos)
+            judge = 0
+            return render(request, 'profile_published_content.html', {'co_infos': co_infos, "judge":judge})
+    if request.method == 'POST':
+        print("now in mypublish post")
+        type = request.POST.get('type')
+        id = request.POST.get('id')
+        if type == 'D':
+            print("now in deletion!")
+            if iden == 'S':
+                print("now in student(recruitment)//post")
+                recruitment_info.objects.filter(ID=id).update(isDelete=1)
+                message = "成功删除发布招募信息！"
+                # messages.success("成功删除发布信息！")
+                return HttpResponse(json.dumps({
+                    "message": message
+                }))
+            if iden == 'T':
+                print("now in teacher(course)//post")
+                course.objects.filter(ID=id).update(state=2)
+                message = "成功删除发布课程信息！"
+                return HttpResponse(json.dumps({
+                    "message": message
+                }))
+        else:
+            print("now in loading your course!")
+            myFile = request.FILES.get("myfile", None)  # 获取上传的文件，如果没有文件，则默认为None
+            print("now lets see myfile")
+            print(myFile)
+            if not myFile:
+                print("no my file")
+                messages.error(request, "您还未选取上传的课程！")
+                # message = "您还未选取上传的文件！"
+                return redirect('/profile_published_content')
+            else:
+                route = os.path.join("../static/images/video_feng", myFile.name)
+                print("the route is")
+                print(route)
+                print("now let's see the route stipped")
+                temp = route.split('/')
+                r = temp[1] + '/' + temp[2] + '/' + temp[3] + '/' + temp[4]
+                print(r)
+                fileRoute = r
+                destination = open(fileRoute, 'wb+')  # 打开特定的文件进行二进制的写操作
+                for chunk in myFile.chunks():  # 分块写入文件
+                    destination.write(chunk)
+                destination.close()
+            # message = "上传文件成功！"
+            id = request.POST.get('re_id')
+            course.objects.filter(ID=id).update(isUpload=0,video=fileRoute) #更改状态为已上传文件
+            messages.success(request, "上传课程成功！")
+            return redirect('/profile_published_content')
+
+
+@csrf_exempt
+def video(request):
+    if request.method == 'GET':
+        print("now get video page")
+        return render(request, 'video.html')
+    if request.method == 'POST':
+        pass
 
 
 @csrf_exempt

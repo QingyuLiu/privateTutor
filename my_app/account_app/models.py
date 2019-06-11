@@ -128,6 +128,7 @@ class course(models.Model):
     left = models.IntegerField(default=1) #剩余位数
     taken = models.IntegerField(default=1) #已占位数
     isUpload = models.IntegerField(default=1) #1代表未上传，0代表已上传
+    video = models.ImageField(null=True)
     # salary = models.CharField(max_length=256, default='abc')
     # type=models.CharField(max_length=256)
     picture1 = models.ImageField(null=True)

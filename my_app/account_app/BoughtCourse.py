@@ -53,28 +53,44 @@ def BoughtCourseInfo(request):
         })
 
     if request.method=="POST":
-        type=request.POST.get('type')
-        id = request.POST.get('id')
-        order = models.course_order.objects.get(ID=id)
-        print(type)
-        if type=="D":
-            order.state = "D"
-            order.save()
-            message = "成功删除订单！"
-        elif type=="C":
-            order.state = "CL"
-            order.save()
-            message = "成功取消订单！"
-        elif type=="R":
-            order.state = "R"
-            order.save()
-            message = "申请退款成功，待课任老师审核通过后将金额返还至您的账户！"
+        if "enter" in request.POST:
+            print("enter video:")
+            id = request.POST.get('id')
+            print("now let's see id")
+            print(id)
+            # courseOrder = models.course_order.objects.filter(ID=id)
+            # for courseorder in courseOrder:
+            #     courseID = courseorder.courseID_id
+            cc = models.course.objects.filter(ID=id)
+            for c in cc:
+                videoRoot = str(c.video)
+            root = videoRoot
+            print("the template is:")
+            print(root)
+            return render(request, 'video.html',{'url':root})
         else:
-            message='error'
+            type = request.POST.get('type')
+            id = request.POST.get('id')
+            order = models.course_order.objects.get(ID=id)
+            print(type)
+            if type == "D":
+                order.state = "D"
+                order.save()
+                message = "成功删除订单！"
+            elif type == "C":
+                order.state = "CL"
+                order.save()
+                message = "成功取消订单！"
+            elif type == "R":
+                order.state = "R"
+                order.save()
+                message = "申请退款成功，待课任老师审核通过后将金额返还至您的账户！"
+            else:
+                message = 'error'
 
-        return HttpResponse(json.dumps({
-            "message": message
-        }))
+            return HttpResponse(json.dumps({
+                "message": message
+            }))
 
 
 @csrf_exempt#通知
@@ -102,3 +118,7 @@ def notifications(request):
             order.save()
 
     return redirect("/order")
+
+
+
+

@@ -35,7 +35,7 @@
 
             debugger;
             $.ajax({
-                url: "/order",
+                url: "/profile_published_content",
                 type: "POST",
                 data: post_data,
                 dataType:"json",
@@ -86,32 +86,6 @@
             window.location.reload();
             alert("已批准退课申请！");
             }
-        }
-
-        function viewCourse(type,id,floor_id) {
-            if(type=='V'){
-            	$.ajax({
-                url: "/video",
-                type: "POST",
-                data: {"type":type,"id":id},
-                dataType:"json",
-                success: function (data) {
-                }
-            	});
-
-            }
-
-            debugger;
-            $.ajax({
-                url: "/video",
-                type: "GET",
-                data: post_data,
-                dataType:"json",
-                success: function (data) {
-                }
-            });
-
-
         }
     </script>
 <div class="wrapper">
@@ -436,7 +410,7 @@
 								<li><a href="page-candidates-change-password.html">Change Password</a></li>
 							</ul>
 						</li>
-	                    
+
 					</ul>
 				</li>
 				<li><span>Pages</span>
@@ -500,55 +474,78 @@
 
 					<div class="row">
 						<div class="col-lg-12">
-							<h4 class="fz20">已购买的课程</h4>
+							<h4 class="fz20">已发布的信息</h4>
+							<br>
 						</div>
-					{% for item in courseInfoList %}
-						<div class="col-lg-12">
-							<div class="candidate_list_view style2">
-								<div class="thumb">
-									<img class="img-fluid rounded-circle" src="{% static 'images/team/c2.jpg' %}" alt="c2.jpg">
-									<!--<div class="cpi_av_rating"><span></span></div>-->
-								</div>
-								<div class="content">
-									<h4 class="title">{{ item.courseName }} <small class="verified text-thm2 pl10"><i class="fa fa-check-circle"></i></small></h4>
-									<span class="flaticon-user"></span><li class="list-inline-item"> {{ item.teacher }}</li><br>
-									<span class="flaticon-clock"></span><li class="list-inline-item"> {{ item.time }}</li><br>
-									<span class="flaticon-price "></span><li class="list-inline-item"> {{ item.price }}</li><br>
-									<span class="text-thm2"> {{ item.tag }}</span></p>
-									{% if item.state == "已完成" or item.state == "进行中" %}
-									<form id="form2" action="" method="POST" onsubmit="return check();">
-										<input type="hidden" name="id" value="{{ item.id }}">
-										<button class="btn btn-lg btn-thm" href="#" name="enter" type="submit">进入课程</button>
-									</form>
-								</div>
-				    			<ul class="view_edit_delete_list mt25 float-right fn-xl">
+					<div class="col-lg-12">
+							<div class="candidate_job_reivew style2">
+								<div class="table-responsive job_review_table mt0">
+									<table class="table">
+										<thead class="thead-light">
+									    	<tr>
+									    		<!--<th scope="col">编号</th>-->
+									    		<th scope="col">标题</th>
+									    		<th scope="col">创建日期</th>
+									    		<th scope="col">价格</th>
+									    		<th scope="col">标签</th>
+									    		<th scope="col">时间</th>
+												{% if judge == 0 %}
+												<th scope="col">选取课程</th>
+												<th scope="col">上传课程</th>
+												{% endif %}
+									    		<th scope="col">管理</th>
 
-									<div class="job_post_count text-center">
-										<h4 class="text-thm2">{{ item.state }}</h4>
-									</div>
-									<br>
+									    	</tr>
+										</thead>
+										<tbody>
+									    	{% for info in re_infos %}
+												<tr>
+													<th scope="row">{{info.recruitmentName}}</th>
+													<td>{{info.date_created}}</td>
+													<td>{{info.price}}</td>
+													<td>{{info.tag}}</td>
+													<td>{{info.startTime}} {{info.courseStartTime}}--{{info.endTime}} {{info.courseEndTime}}</td>
+													<!--<td>200</td>-->
+													<td><li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("D","{{ info.ID }}")' data-toggle="tooltip" data-placement="top" title="删除"><span class="flaticon-rubbish-bin"></span></a></li></td>
+									    		</tr>
+											{% endfor %}
+											{% for info in co_infos %}
+												<tr>
+													<th scope="row">{{info.courseName}}</th>
+													<td>{{info.date_created}}</td>
+													<td>{{info.price}}</td>
+													<td>{{info.tag}}</td>
+													<td>{{info.startTime}} {{info.courseStartTime}}--{{info.endTime}} {{info.courseEndTime}}</td>
+													<!--<td>200</td>-->
+													<form enctype="multipart/form-data" action="" method="POST" onsubmit="return check();">
+														<input type="hidden" name="re_id" value="{{ info.ID }}">
+														<td><input type="file" name="myfile" /></td>
+														<td><button class="btn btn-lg btn-thm" href="#" name="loadfile" type="submit">L</button></td>
+													</form>
+													<td><li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("D","{{ info.ID }}")' data-toggle="tooltip" data-placement="top" title="删除"><span class="flaticon-rubbish-bin"></span></a></li></td>
+													<!--<td><form enctype="multipart/form-data" action="" method="POST" onsubmit="return check();"><input type="file" name="myfile" /></form></td>-->
+													<!--<td><li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("L")' data-toggle="tooltip" data-placement="top" title="上传视频"><span class="flaticon-rocket-launch"></span></a></li></td>-->
 
-				    				<!--<li class="list-inline-item" style="background-color: #d1eaff;"><a onclick='viewCourse("V","{{ item.id }}")'  data-toggle="tooltip"  data-placement="top" title="进入课程">进入课程</a></li>-->
-									{% endif %}
-									{% if item.state == "未支付" %}
-				    				<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("C","{{ item.id }}")' data-toggle="tooltip"  data-placement="top" title="取消订单">取消订单</a></li>
-									<li class="list-inline-item" style="background-color: #c1ebc9;"><a href="#" data-toggle="tooltip" data-placement="top" title="付款">付款</a></li>
-									{% elif item.state == "已完成" or item.state == "交易已关闭" %}
-				    				<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("D","{{ item.id }}")' data-toggle="tooltip" data-placement="top" title="Delete"><span class="flaticon-rubbish-bin"></span></a></li>
-				    				{% elif item.state == "进行中" %}
-									<li class="list-inline-item" style="background-color: #c1ebc9;"><a onclick='postData("R","{{ item.id }}")'  data-toggle="tooltip"  data-placement="top" title="Send Message">退款</a></li>
-									{% endif %}
-								</ul>
+									    		</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
-					{% endfor %}
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	
+	{% if messages %}
+		<script>
+			{% for msg in messages %}
+				alert('{{ msg.message }}');
+			{% endfor %}
+		</script>
+	{% endif %}
 <a class="scrollToHome text-thm" href="#"><i class="flaticon-rocket-launch"></i></a>
 </div>
 <!-- Wrapper End -->
