@@ -35,6 +35,10 @@ global fileRoute
 ------------------------
 '''
 @csrf_exempt
+def check_teacher_info(request):
+    # return render(request, 'page-check.html')
+    return render(request, 'page-check.html')
+@csrf_exempt
 def profile_change_password(request):
     if request.session.get('is_login', None):
         request_dict = {}
