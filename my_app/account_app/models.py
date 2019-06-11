@@ -180,7 +180,7 @@ class course_order(models.Model):
     ID=models.AutoField(primary_key=True)
     courseID=models.ForeignKey('course',on_delete=models.CASCADE)
     stuID=models.ForeignKey('UserProfile',on_delete=models.CASCADE)
-    date_created = models.DateTimeField(('date created'), default=timezone.now)
+    date_created = models.DateTimeField(('date created'),auto_now = True)
     STATE_CHOICE = (
         (u'C', u'Complete'),
         (u'UP', u'Unpaid'),

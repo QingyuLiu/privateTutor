@@ -33,6 +33,7 @@ urlpatterns = [
        url(r'^profile_person_info$', views.profile_person_info, name='profile_person_info'),
        url(r'^page-blog-list$',views.homepage),
        url(r'^order$', BoughtCourse.BoughtCourseInfo),
+       url(r'^notification$', BoughtCourse.notifications),
        url(r'^check',views.check_teacher_info)
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

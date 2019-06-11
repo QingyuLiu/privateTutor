@@ -5,6 +5,7 @@ from .forms import RegistrationForm, LogForm,ModifyPassword,ModifyEmail
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+from . import NotificationMes
 
 @csrf_exempt#显示已购买课程的信息 以及退课或删除已完成课程订单
 def BoughtCourseInfo(request):
@@ -43,9 +44,11 @@ def BoughtCourseInfo(request):
                           'price':course.price, 'state':txt}
             courseInfoList.append(courseInfo)
 
+        temp=NotificationMes.getNotifications(request.session.get('username'),request.session.get('identity'))
 
         return render(request, 'page-employer-resume.html',{
             'courseInfoList': courseInfoList,
+            'NotificationList':temp,
         })
 
     if request.method=="POST":
@@ -71,3 +74,15 @@ def BoughtCourseInfo(request):
         return HttpResponse(json.dumps({
             "message": message
         }))
+
+
+@csrf_exempt#通知
+def notifications(request):
+    if request.method=='POST':
+        id=request.POST.get('id')
+
+        order = models.course_order.objects.get(ID=id)
+        order.state = "C"
+        order.save()
+
+    return redirect("/order")
