@@ -36,6 +36,15 @@ global fileRoute
 '''
 @csrf_exempt
 def check_teacher_info(request):
+    if request.is_ajax():
+        user = get_user_model()
+        user = user.objects.get(email=request.session['user_email'])
+        user.state = True
+        user.save()
+        request.session['state'] = True
+        print('lalala')
+        # return render(request, 'page-blog-list.html')
+        return JsonResponse({'status': 200, 'message': 'add event success'})
     # return render(request, 'page-check.html')
     return render(request, 'page-check.html')
 @csrf_exempt
@@ -153,6 +162,10 @@ def login(request):
                         request.session['pay_id'] = person.pay_id
                         request.session['zone'] = person.zone
                         request.session['introduction'] = person.introduction
+                        request.session['state'] = person.state
+                        if person.identity == 'T':
+                            if person.state == False:
+                                return redirect('/check')
                         print("now to homepage")
                         return redirect('/page-blog-list')
                         #return render(request,'page-blog-list.html')
