@@ -270,7 +270,7 @@ def homepage(request):
             print("read detail information about recruitment")
             re_id = request.POST['re_id']
             print("now let's see recruitment id")
-            tep = 'info_course/?id=' + re_id
+            tep = 'info_recruitment/?id=' + re_id
             print(tep)
             return redirect(tep)
         if "submit_info" in request.POST:
@@ -340,7 +340,7 @@ def homepage(request):
                                     "to_name": models.CharField(max_length=32),
                                     "send_time": models.DateTimeField(default=timezone.now),
                                     "content": models.TextField(),
-                                    "read": models.IntegerField(default=0),
+                                    "read": models.IntegerField(default=0,null=True),
                                     '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                         self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
                                         self.content,self.read),
@@ -400,7 +400,7 @@ def homepage(request):
                                 "to_name": models.CharField(max_length=32),
                                 "send_time": models.DateTimeField(default=timezone.now),
                                 "content": models.TextField(),
-                                "read": models.IntegerField(default=0),
+                                "read": models.IntegerField(default=0,null=True),
                                 '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                     self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
                                     self.content, self.read),
@@ -489,7 +489,7 @@ def homepage(request):
                                     "to_name": models.CharField(max_length=32),
                                     "send_time": models.DateTimeField(default=timezone.now),
                                     "content": models.TextField(),
-                                    "read": models.IntegerField(default=0),
+                                    "read": models.IntegerField(default=0,null=True),
                                     '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                         self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
                                         self.content, self.read),
@@ -542,7 +542,7 @@ def homepage(request):
                                 "to_name": models.CharField(max_length=32),
                                 "send_time": models.DateTimeField(default=timezone.now),
                                 "content": models.TextField(),
-                                "read": models.IntegerField(default=0),
+                                "read": models.IntegerField(default=0,null=True),
                                 '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                     self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
                                     self.content, self.read),
@@ -908,7 +908,7 @@ def info_recruitment(request):
             return render(request, 'info_recruitment.html', {'recruitment_info': r,'student': student,'enable_comment': False,'comments':comments})
     if request.method == 'POST':
         recruitment_id = request.GET.get('id')
-        commentTable = "my_app_comment_" + recruitment_id
+        commentTable = "my_app_rcomment_" + recruitment_id
         content = request.POST.get('review')
         to_name = request.POST.get('to_name')
         to_floor = request.POST.get('to_id')

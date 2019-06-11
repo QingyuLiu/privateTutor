@@ -127,6 +127,7 @@ class course(models.Model):
     price = models.FloatField(null=False, default=0)
     left = models.IntegerField(default=1) #剩余位数
     taken = models.IntegerField(default=1) #已占位数
+    isUpload = models.IntegerField(default=1) #1代表未上传，0代表已上传
     # salary = models.CharField(max_length=256, default='abc')
     # type=models.CharField(max_length=256)
     picture1 = models.ImageField(null=True)
