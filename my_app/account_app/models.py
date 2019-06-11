@@ -68,6 +68,7 @@ class UserProfile(AbstractBaseUser):
     pay_id = models.CharField(max_length=30,default="")
     zone = models.CharField(max_length=20,default="Beijing,China")
     introduction = models.CharField(max_length=100,default="")
+    state = models.BooleanField(default=False)
 
     objects = UserProfileManager()  # 创建用户
 
