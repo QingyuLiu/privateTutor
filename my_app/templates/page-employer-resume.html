@@ -45,11 +45,27 @@
                 }
             });
         }
-        function checkNotification(type,id) {
+        function checkNotification(type,id,floor_id) {
             if(type=='C'){
+            	$.ajax({
+                url: "/notification",
+                type: "POST",
+                data: {"type":type,"id":id,"floor_id":floor_id},
+                dataType:"json",
+                success: function (data) {
+                }
+            	});
             	window.location.href="http://127.0.0.1:8000/info_course/?id="+id
             }
             else if(type == 'R'){
+            	$.ajax({
+                url: "/notification",
+                type: "POST",
+                data: {"type":type,"id":id,"floor_id":floor_id},
+                dataType:"json",
+                success: function (data) {
+                }
+            	});
                 window.location.href="http://127.0.0.1:8000/info_recruitment/?id="+id
              }
             else{
@@ -247,12 +263,12 @@
 									<ul>
 										{% for i in NotificationList %}
 										{% if i.type == "C" %}
-										<li onclick='checkNotification("C","{{ i.ID }}")'>
+										<li onclick='checkNotification("C","{{ i.ID }}","{{ i.floor_id }}")'>
 											<h5>课程信息——新留言</h5>
 											<p>您收到了来自{{ i.from_name }}的留言</p>
 										</li>
 										{% elif i.type == "R" %}
-										<li onclick='checkNotification("R","{{ i.ID }}")'>
+										<li onclick='checkNotification("R","{{ i.ID }}","{{ i.floor_id }}")'>
 											<h5>招募信息——新留言</h5>
 											<p>您收到了来自{{ i.from_name }}的留言</p>
 										</li>
@@ -260,7 +276,7 @@
 										<li>
 											<h5>待处理的退课审核信息</h5>
 											<p>学生{{ i.name }}申请退课
-												<button style="position: relative;left: 120px;color:green;" onclick='checkNotification("Refund","{{ i.ID }}")'>确认</button></p>
+												<button style="position: relative;left: 120px;color:green;" onclick='checkNotification("Refund","{{ i.ID }}","1")'>确认</button></p>
 
 										</li>
 										{% endif %}

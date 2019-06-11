@@ -19,7 +19,7 @@ def getNotifications(username,identity):
         print(commentTable)
         with connection.cursor() as cursor:
             # 执行sql语句
-            sql = """SELECT from_name,send_time FROM '%s' WHERE to_name = '%s' and read = 0""" % (commentTable,username)
+            sql = """SELECT from_name,send_time,floor_id FROM '%s' WHERE to_name = '%s' and read = 0""" % (commentTable,username)
             print(sql)
             cursor.execute(sql)
             # 查出一条数据
@@ -29,7 +29,7 @@ def getNotifications(username,identity):
             cursor.close()
 
         for row in rows:
-            temp={'ID':courseID_id['ID'],'type':'C','from_name':row[0],'time':row[1]}
+            temp={'ID':courseID_id['ID'],'floor_id':row[2],'type':'C','from_name':row[0],'time':row[1]}
             notificationInfo.append(temp)
 
     '''招聘信息留言'''
@@ -40,7 +40,7 @@ def getNotifications(username,identity):
         print(commentTable)
         with connection.cursor() as cursor:
             # 执行sql语句
-            sql = """SELECT from_name,send_time FROM '%s' WHERE to_name = '%s' and read = 0""" % (commentTable, username)
+            sql = """SELECT from_name,send_time,floor_id FROM '%s' WHERE to_name = '%s' and read = 0""" % (commentTable, username)
             print(sql)
             cursor.execute(sql)
             # 查出一条数据
@@ -50,7 +50,7 @@ def getNotifications(username,identity):
             cursor.close()
 
         for row in rows:
-            temp = {'ID': recruitment_id['ID'], 'type': 'R', 'from_name': row[0],'time':row[1]}
+            temp = {'ID': recruitment_id['ID'], 'floor_id':row[2],'type': 'R', 'from_name': row[0],'time':row[1]}
             notificationInfo.append(temp)
 
     '''老师审核退课'''

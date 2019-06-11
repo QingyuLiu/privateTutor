@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 from . import NotificationMes
+from django.db import connection
 
 @csrf_exempt#显示已购买课程的信息 以及退课或删除已完成课程订单
 def BoughtCourseInfo(request):
@@ -79,10 +80,25 @@ def BoughtCourseInfo(request):
 @csrf_exempt#通知
 def notifications(request):
     if request.method=='POST':
+        type=request.POST.get('type')
         id=request.POST.get('id')
 
-        order = models.course_order.objects.get(ID=id)
-        order.state = "C"
-        order.save()
+        if type == 'C' or type=='R':
+            floor_id=request.POST.get('floor_id')
+
+            if type=='C':
+                commentTable = "my_app_comment_%s" % (id)
+            else:
+                commentTable = "my_app_rcomment_%s" % (id)
+            with connection.cursor() as cursor:
+                # 执行sql语句
+                sql = """UPDATE '%s' SET READ=%d WHERE floor_id=%s""" % (
+                    commentTable, 1,floor_id)
+                cursor.execute(sql)
+                cursor.close()
+        else:
+            order = models.course_order.objects.get(ID=id)
+            order.state = "C"
+            order.save()
 
     return redirect("/order")
