@@ -9,6 +9,11 @@ import datetime
 @csrf_exempt#显示已购买课程的信息 以及退课或删除已完成课程订单
 def BoughtCourseInfo(request):
     if request.method == 'GET':
+        '''
+        ------------------------
+        -----订单信息------
+        ------------------------
+        '''
         courseInfoList=[]
         user = get_user_model()
 
@@ -38,7 +43,7 @@ def BoughtCourseInfo(request):
                           'price':course.price, 'state':txt}
             courseInfoList.append(courseInfo)
 
-        print(courseInfoList)
+
         return render(request, 'page-employer-resume.html',{
             'courseInfoList': courseInfoList,
         })
@@ -66,5 +71,3 @@ def BoughtCourseInfo(request):
         return HttpResponse(json.dumps({
             "message": message
         }))
-
-

@@ -85,38 +85,29 @@
 						    <a href="page-candidates-job-alert.html" data-toggle="dropdown"><span class="flaticon-alarm color-white fz20"></span><span>8</span></a>
 						    <div class="dropdown-menu">
 								<div class="so_heading">
-									<p>Notifications</p>
+									<p>通知</p>
 								</div>
 								<div class="so_content" data-simplebar="init">
 									<ul>
+										{% for item in NotificationList %}
+										{% if item.type == "C" %}
 										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
+											<h5>课程信息——新留言</h5>
+											<p>您收到了来自{% item.from_name %}的留言</p>
 										</li>
+										{% elif item.type == "R" %}
 										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
+											<h5>招募信息——新留言</h5>
+											<p>您收到了来自{% item.from_name %}的留言</p>
 										</li>
+										{% else %}
 										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
+											<h5>待处理的退课审核信息</h5>
+											<p>学生{% item.name %}申请退课</p>
+											<button>确认</button>
 										</li>
-										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
-										</li>
-										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
-										</li>
-										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
-										</li>
-										<li>
-											<h5>Candidate suggestion</h5>
-											<p>You might be interested based on your profile.</p>
-										</li>
+										{% endif %}
+										{% endfor %}
 									</ul>
 								</div>
 						    </div>

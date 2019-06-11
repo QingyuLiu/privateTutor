@@ -323,12 +323,13 @@ def homepage(request):
                                     "to_name": models.CharField(max_length=32),
                                     "send_time": models.DateTimeField(default=timezone.now),
                                     "content": models.TextField(),
-                                    '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                    "read": models.IntegerField(default=0),
+                                    '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                         self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
-                                        self.content),
+                                        self.content,self.read),
                                 }
                                 options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
-                                                        'content'],
+                                                        'content','read'],
                                            'verbose_name': 'valued customer'}
                                 course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                                module='models')
@@ -376,16 +377,19 @@ def homepage(request):
                             # CreateNewMessage(tt)
 
                             fields = {
-                                "floor_id":models.AutoField(primary_key=True),
-                                "from_name":models.CharField(max_length=32),
+                                "floor_id": models.AutoField(primary_key=True),
+                                "from_name": models.CharField(max_length=32),
                                 "to_floor": models.IntegerField(default=0),
                                 "to_name": models.CharField(max_length=32),
                                 "send_time": models.DateTimeField(default=timezone.now),
                                 "content": models.TextField(),
-                                '__str__': lambda self: '%d %s %d %s %s %s' % (
-                                self.floor_id, self.from_name,self.to_floor, self.to_name, self.send_time, self.content),
+                                "read": models.IntegerField(default=0),
+                                '__str__': lambda self: '%d %s %d %s %s %s %d' % (
+                                    self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
+                                    self.content, self.read),
                             }
-                            options = {'ordering': ['floor_id', 'from_name','to_floor', 'to_name', 'send_time','content'],
+                            options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
+                                                    'content', 'read'],
                                        'verbose_name': 'valued customer'}
                             course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                            module='models')
@@ -468,12 +472,13 @@ def homepage(request):
                                     "to_name": models.CharField(max_length=32),
                                     "send_time": models.DateTimeField(default=timezone.now),
                                     "content": models.TextField(),
-                                    '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                    "read": models.IntegerField(default=0),
+                                    '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                         self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
-                                        self.content),
+                                        self.content, self.read),
                                 }
                                 options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
-                                                        'content'],
+                                                        'content', 'read'],
                                            'verbose_name': 'valued customer'}
                                 course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                                module='models')
@@ -520,13 +525,14 @@ def homepage(request):
                                 "to_name": models.CharField(max_length=32),
                                 "send_time": models.DateTimeField(default=timezone.now),
                                 "content": models.TextField(),
-                                '__str__': lambda self: '%d %s %d %s %s %s' % (
+                                "read": models.IntegerField(default=0),
+                                '__str__': lambda self: '%d %s %d %s %s %s %d' % (
                                     self.floor_id, self.from_name, self.to_floor, self.to_name, self.send_time,
-                                    self.content),
+                                    self.content, self.read),
                             }
-                            options = {
-                                'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time', 'content'],
-                                'verbose_name': 'valued customer'}
+                            options = {'ordering': ['floor_id', 'from_name', 'to_floor', 'to_name', 'send_time',
+                                                    'content', 'read'],
+                                       'verbose_name': 'valued customer'}
                             course_message = create_model1(tt, fields, options=options, app_label='my_app',
                                                            module='models')
                             install(course_message)  # 同步到数据库中
