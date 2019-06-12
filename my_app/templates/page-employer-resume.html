@@ -515,7 +515,7 @@
 									<span class="flaticon-clock"></span><li class="list-inline-item"> {{ item.time }}</li><br>
 									<span class="flaticon-price "></span><li class="list-inline-item"> {{ item.price }}</li><br>
 									<span class="text-thm2"> {{ item.tag }}</span></p>
-									{% if item.state == "已完成" or item.state == "进行中" %}
+									{% if item.state == "进行中" %}
 									<form id="form2" action="" method="POST" onsubmit="return check();">
 										<input type="hidden" name="id" value="{{ item.id }}">
 										<button class="btn btn-lg btn-thm" href="#" name="enter" type="submit">进入课程</button>

@@ -842,7 +842,7 @@ def info_course(request):
             c_obj = course.objects.get(ID=courseID_id)
             course.objects.filter(ID=courseID_id).update(left=c_obj.left - 1)
             course.objects.filter(ID=courseID_id).update(taken=c_obj.taken + 1)
-            course_order.objects.create(date_created=datetime.now(),state=state, courseID=courseID_id, stuID=user.userID)
+            course_order.objects.create(date_created=datetime.now(),state=state, courseID_id=courseID_id, stuID_id=user.userID)
         else:
             print('留言')
             courseID_id = request.GET.get('id')
